@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consultas TRANSFO · Hub interactivo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #0a0d14;
+  --bg-1:      #0f131d;
+  --bg-2:      #161b27;
+  --bg-3:      #1d2433;
+  --bg-4:      #262e40;
+  --b-1: rgba(255,255,255,0.06);
+  --b-2: rgba(255,255,255,0.10);
+  --b-3: rgba(255,255,255,0.16);
+  --t-1: #ebeef5;
+  --t-2: #a4abbf;
+  --t-3: #6b7387;
+  --t-4: #444b5e;
+  --a:    #f0843d;
+  --a-2:  #ffac6f;
+  --a-3:  #ffd2a8;
+  --a-d:  rgba(240,132,61,0.12);
+  --a-d2: rgba(240,132,61,0.22);
+  --a-d3: rgba(240,132,61,0.04);
+  --t-tab:  #1b3550;  --t-tab-fg:  #6fb1f0;  --t-tab-glow: rgba(111,177,240,0.15);
+  --t-1pp:  #1a3a2a;  --t-1pp-fg:  #6dd09a;  --t-1pp-glow: rgba(109,208,154,0.15);
+  --t-2pp:  #3d2a1a;  --t-2pp-fg:  #f0a060;  --t-2pp-glow: rgba(240,160,96,0.15);
+  --t-ent:  #2a1b3d;  --t-ent-fg:  #c084f5;  --t-ent-glow: rgba(192,132,245,0.15);
+  --t-exg:  #3d1a1d;  --t-exg-fg:  #f07585;  --t-exg-glow: rgba(240,117,133,0.15);
+  --t-cic:  #1a3838;  --t-cic-fg:  #5fd0c4;  --t-cic-glow: rgba(95,208,196,0.15);
+  --t-gen:  #2a2a2a;  --t-gen-fg:  #a4abbf;  --t-gen-glow: rgba(164,171,191,0.15);
+  --ok:   #4ade80;
+  --warn: #fbbf24;
+  --err:  #f87171;
+  --info: #60a5fa;
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-xl: 20px;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+[data-theme="light"] {
+  --bg:  #faf8f3; --bg-1: #f4f1e8; --bg-2: #ffffff; --bg-3: #fbf9f3; --bg-4: #ede8d8;
+  --b-1: rgba(0,0,0,0.06); --b-2: rgba(0,0,0,0.10); --b-3: rgba(0,0,0,0.20);
+  --t-1: #1a1d24; --t-2: #525766; --t-3: #818794; --t-4: #b0b5c0;
+  --a:   #c66020; --a-2: #e87a30; --a-d: rgba(198,96,32,0.10); --a-d2:rgba(198,96,32,0.18); --a-d3:rgba(198,96,32,0.04);
+  --t-tab:#dde9f6; --t-tab-fg:#1d5694; --t-tab-glow:rgba(29,86,148,0.10);
+  --t-1pp:#dcefe2; --t-1pp-fg:#1d6f3a; --t-1pp-glow:rgba(29,111,58,0.10);
+  --t-2pp:#fbe7d4; --t-2pp-fg:#a05210; --t-2pp-glow:rgba(160,82,16,0.10);
+  --t-ent:#e9def2; --t-ent-fg:#5e2a8a; --t-ent-glow:rgba(94,42,138,0.10);
+  --t-exg:#fadcdf; --t-exg-fg:#a01e2d; --t-exg-glow:rgba(160,30,45,0.10);
+  --t-cic:#d6ece9; --t-cic-fg:#0d6e64; --t-cic-glow:rgba(13,110,100,0.10);
+  --t-gen:#e3e3e3; --t-gen-fg:#525766; --t-gen-glow:rgba(82,87,102,0.10);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', -apple-system, system-ui, sans-serif;
+  background: var(--bg); color: var(--t-1); font-size: 15px; line-height: 1.6;
+  min-height: 100vh; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  transition: background 0.3s, color 0.3s;
+}
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background: radial-gradient(ellipse 80% 50% at 15% 0%, var(--a-d3) 0%, transparent 50%),
+              radial-gradient(ellipse 60% 40% at 85% 100%, rgba(95,208,196,0.04) 0%, transparent 50%);
+  pointer-events: none; z-index: 0;
+}
+body::after {
+  content: ''; position: fixed; inset: 0;
+  background-image: repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(255,255,255,0.005) 1px, rgba(255,255,255,0.005) 2px);
+  pointer-events: none; z-index: 0; opacity: 0.5;
+}
+::selection { background: var(--a-d2); color: var(--a-2); }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--bg-4); }
+
+.app { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 28px; }
+
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10,13,20,0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--b-1); margin: 0 -28px 0 -28px; padding: 0 28px;
+}
+[data-theme="light"] .topbar { background: rgba(250,248,243,0.88); }
+.topbar-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 16px; height: 60px; }
+.brand { display: flex; align-items: center; gap: 10px; font-family: 'Fraunces', serif; font-size: 17px; font-weight: 500; letter-spacing: -0.01em; color: var(--t-1); white-space: nowrap; }
+.brand-logo { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, var(--a) 0%, var(--a-2) 100%); display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; color: white; font-weight: 600; font-size: 14px; font-style: italic; }
+.brand-sub { color: var(--t-3); font-weight: 400; font-style: italic; font-size: 14px; }
+.topbar-spacer { flex: 1; }
+.topbar-btn { background: none; border: 1px solid var(--b-2); color: var(--t-2); font-family: inherit; font-size: 12px; font-weight: 500; padding: 7px 12px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.18s var(--ease); }
+.topbar-btn:hover { border-color: var(--b-3); color: var(--t-1); background: var(--bg-2); }
+.topbar-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+.theme-toggle { width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+
+.hero { padding: 64px 0 36px; position: relative; }
+.hero-eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--a); background: var(--a-d); border: 1px solid var(--a-d2); padding: 6px 14px; border-radius: 100px; margin-bottom: 24px; }
+.hero-eyebrow::before { content: ''; width: 6px; height: 6px; background: var(--a); border-radius: 50%; box-shadow: 0 0 0 3px var(--a-d), 0 0 8px var(--a-2); animation: pulse 2.4s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(0.85); } }
+.hero-title { font-family: 'Fraunces', serif; font-size: clamp(38px, 6vw, 60px); font-weight: 400; line-height: 1.05; letter-spacing: -0.025em; color: var(--t-1); margin-bottom: 18px; }
+.hero-title em { font-style: italic; background: linear-gradient(120deg, var(--a) 0%, var(--a-2) 50%, var(--a-3) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.hero-sub { font-size: 17px; color: var(--t-2); max-width: 640px; font-weight: 300; line-height: 1.55; }
+.hero-deco { position: absolute; right: -20px; top: 40px; width: 240px; height: 200px; opacity: 0.5; pointer-events: none; }
+.hero-deco svg { width: 100%; height: 100%; }
+@media (max-width: 800px) { .hero-deco { display: none; } }
+
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 36px; }
+.stat { background: var(--bg-2); border: 1px solid var(--b-1); border-radius: var(--r-lg); padding: 18px 20px; position: relative; overflow: hidden; transition: border-color 0.2s, transform 0.2s; }
+.stat::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--a-d2), transparent); opacity: 0; transition: opacity 0.3s; }
+.stat:hover { border-color: var(--b-2); transform: translateY(-1px); }
+.stat:hover::before { opacity: 1; }
+.stat-icon { width: 28px; height: 28px; border-radius: 8px; background: var(--a-d); color: var(--a); display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+.stat-icon svg { width: 15px; height: 15px; }
+.stat-num { font-family: 'Fraunces', serif; font-size: 32px; font-weight: 500; color: var(--t-1); line-height: 1; margin-bottom: 4px; letter-spacing: -0.02em; }
+.stat-label { font-size: 11px; color: var(--t-3); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
+@media (max-width: 700px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+
+.tabs { display: flex; gap: 2px; background: var(--bg-2); border: 1px solid var(--b-1); border-radius: 12px; padding: 5px; margin-bottom: 28px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab { background: none; border: none; color: var(--t-2); font-family: inherit; font-size: 13px; font-weight: 500; padding: 9px 16px; border-radius: 8px; cursor: pointer; white-space: nowrap; transition: all 0.18s var(--ease); display: flex; align-items: center; gap: 7px; flex-shrink: 0; }
+.tab svg { width: 14px; height: 14px; opacity: 0.65; }
+.tab:hover { color: var(--t-1); }
+.tab.active { background: var(--bg-3); color: var(--t-1); box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+.tab.active svg { opacity: 1; color: var(--a); }
+[data-theme="light"] .tab.active { background: var(--bg-2); border: 1px solid var(--b-2); }
+
+.panel { display: none; animation: fadeUp 0.4s var(--ease-out) both; }
+.panel.active { display: block; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.panel-h { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 500; letter-spacing: -0.015em; margin-bottom: 6px; color: var(--t-1); }
+.panel-h em { font-style: italic; color: var(--a-2); }
+.panel-sub { font-size: 14px; color: var(--t-3); margin-bottom: 28px; font-weight: 300; }
+
+.dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+@media (max-width: 720px) { .dash-grid { grid-template-columns: 1fr; } }
+.dash-card { background: var(--bg-2); border: 1px solid var(--b-1); border-radius: var(--r-lg); padding: 22px; position: relative; overflow: hidden; }
+.dash-card-h { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; }
+.dash-card-title { font-size: 13px; font-weight: 500; color: var(--t-2); text-transform: uppercase; letter-spacing: 0.06em; }
+.dash-card-meta { font-size: 11px; color: var(--t-3); }
+
+.heatmap-cell { aspect-ratio: 1; background: var(--bg-3); border-radius: 3px; position: relative; cursor: default; transition: transform 0.15s; }
+.heatmap-cell:hover { transform: scale(1.3); z-index: 5; }
+.heatmap-cell[data-count="1"] { background: rgba(240,132,61,0.25); }
+.heatmap-cell[data-count="2"] { background: rgba(240,132,61,0.45); }
+.heatmap-cell[data-count="3"] { background: rgba(240,132,61,0.65); }
+.heatmap-cell[data-count="4"] { background: rgba(240,132,61,0.85); }
+.heatmap-cell[data-count="5"] { background: var(--a); }
+.heatmap-cell[title]:hover::after { content: attr(title); position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%); background: var(--bg-4); color: var(--t-1); padding: 4px 8px; border-radius: 5px; font-size: 11px; white-space: nowrap; pointer-events: none; z-index: 10; border: 1px solid var(--b-2); }
+.heatmap-legend { display: flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 11px; color: var(--t-3); justify-content: flex-end; }
+.heatmap-legend-cell { width: 11px; height: 11px; border-radius: 2px; }
+
+.dist-list { display: flex; flex-direction: column; gap: 11px; }
+.dist-row { display: grid; grid-template-columns: 18px 1fr auto; gap: 12px; align-items: center; font-size: 13px; }
+.dist-dot { width: 9px; height: 9px; border-radius: 2px; }
+.dist-bar-wrap { background: var(--bg-3); height: 6px; border-radius: 3px; overflow: hidden; }
+.dist-bar { height: 100%; border-radius: 3px; transition: width 0.6s var(--ease-out); width: 0; }
+.dist-row span:last-child { color: var(--t-3); font-size: 12px; min-width: 30px; text-align: right; }
+
+.insights { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
+@media (max-width: 720px) { .insights { grid-template-columns: 1fr; } }
+.insight-card { background: var(--bg-2); border: 1px solid var(--b-1); border-radius: var(--r-lg); padding: 18px; border-left: 3px solid var(--a); }
+.insight-card.warn { border-left-color: var(--warn); }
+.insight-card.info { border-left-color: var(--info); }
+.insight-card.err { border-left-color: var(--err); }
+.insight-h { font-size: 12px; font-weight: 500; color: var(--a); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+.insight-card.warn .insight-h { color: var(--warn); }
+.insight-card.info .insight-h { color: var(--info); }
+.insight-card.err .insight-h { color: var(--err); }
+.insight-text { font-size: 13.5px; color: var(--t-1); line-height: 1.55; }
+.insight-text strong { color: var(--a-2); font-weight: 500; }
+
+.dot-tab { background: var(--t-tab-fg); } .dot-1pp { background: var(--t-1pp-fg); } .dot-2pp { background: var(--t-2pp-fg); }
+.dot-ent { background: var(--t-ent-fg); } .dot-exg { background: var(--t-exg-fg); } .dot-cic { background: var(--t-cic-fg); } .dot-gen { background: var(--t-gen-fg); }
+.bar-tab { background: var(--t-tab-fg); } .bar-1pp { background: var(--t-1pp-fg); } .bar-2pp { background: var(--t-2pp-fg); }
+.bar-ent { background: var(--t-ent-fg); } .bar-exg { background: var(--t-exg-fg); } .bar-cic { background: var(--t-cic-fg); } .bar-gen { background: var(--t-gen-fg); }
+
+.toolbar { display: flex; flex-direction: column; gap: 12px; margin-bottom: 22px; }
+.search-wrap { position: relative; }
+.search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--t-3); pointer-events: none; width: 16px; height: 16px; }
+.search-input { width: 100%; background: var(--bg-2); border: 1px solid var(--b-1); border-radius: var(--r-md); padding: 12px 16px 12px 44px; font-family: inherit; font-size: 14px; color: var(--t-1); outline: none; transition: all 0.2s; }
+.search-input::placeholder { color: var(--t-3); }
+.search-input:focus { border-color: var(--a-d2); box-shadow: 0 0 0 3px var(--a-d3); }
+.search-shortcut { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--t-3); background: var(--bg-3); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--b-2); pointer-events: none; }
+.filter-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.filter-btn { font-family: inherit; font-size: 12px; font-weight: 500; padding: 7px 13px; border-radius: 100px; border: 1px solid var(--b-1); background: transparent; color: var(--t-2); cursor: pointer; transition: all 0.18s var(--ease); white-space: nowrap; display: flex; align-items: center; gap: 6px; }
+.filter-btn:hover { border-color: var(--b-2); color: var(--t-1); }
+.filter-btn.active { background: var(--a-d); border-color: var(--a-d2); color: var(--a-2); }
+.filter-btn .count { color: var(--t-3); font-weight: 400; font-size: 11px; }
+.filter-btn.active .count { color: var(--a); }
+
+.results-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; font-size: 12px; color: var(--t-3); }
+.results-actions { display: flex; gap: 6px; }
+.results-actions button { background: none; border: none; font-family: inherit; font-size: 12px; color: var(--t-3); cursor: pointer; padding: 4px 10px; border-radius: 6px; display: flex; align-items: center; gap: 5px; transition: all 0.15s; }
+.results-actions button:hover { background: var(--bg-2); color: var(--t-1); }
+.results-actions svg { width: 12px; height: 12px; }
+
+.card { background: var(--bg-2); border: 1px solid var(--b-1); border-radius: var(--r-lg); margin-bottom: 9px; overflow: hidden; transition: border-color 0.2s, box-shadow 0.2s; animation: cardIn 0.3s var(--ease-out) both; }
+@keyframes cardIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.card:hover { border-color: var(--b-2); }
+.card.hidden { display: none; }
+.card.bookmarked { border-left: 2px solid var(--a); }
+.card.reviewed { opacity: 0.55; }
+.card.reviewed:hover { opacity: 1; }
+.card-h { padding: 18px 20px; cursor: pointer; display: grid; grid-template-columns: auto 1fr auto auto; gap: 14px; align-items: start; user-select: none; }
+.card-num { font-family: 'Fraunces', serif; font-size: 14px; color: var(--t-4); line-height: 1.65; min-width: 22px; text-align: right; }
+.card-main { min-width: 0; }
+.card-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+.card-date { font-size: 11px; color: var(--t-4); font-family: 'JetBrains Mono', monospace; }
+.tag { font-size: 10px; font-weight: 500; padding: 3px 9px; border-radius: 100px; letter-spacing: 0.04em; text-transform: uppercase; display: inline-flex; align-items: center; gap: 4px; }
+.tag::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.tag-tab { background: var(--t-tab); color: var(--t-tab-fg); }
+.tag-1pp { background: var(--t-1pp); color: var(--t-1pp-fg); }
+.tag-2pp { background: var(--t-2pp); color: var(--t-2pp-fg); }
+.tag-ent { background: var(--t-ent); color: var(--t-ent-fg); }
+.tag-exg { background: var(--t-exg); color: var(--t-exg-fg); }
+.tag-cic { background: var(--t-cic); color: var(--t-cic-fg); }
+.tag-gen { background: var(--t-gen); color: var(--t-gen-fg); }
+.card-q { font-size: 14.5px; font-weight: 400; color: var(--t-1); line-height: 1.55; }
+.card-actions { display: flex; gap: 4px; align-items: center; }
+.icon-btn { width: 28px; height: 28px; border: none; background: transparent; border-radius: 6px; color: var(--t-3); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+.icon-btn:hover { background: var(--bg-3); color: var(--t-1); }
+.icon-btn svg { width: 14px; height: 14px; }
+.icon-btn.active { color: var(--a); }
+.icon-btn.checked { color: var(--ok); }
+.card-chev { color: var(--t-3); transition: transform 0.3s var(--ease), color 0.2s; flex-shrink: 0; margin-top: 4px; }
+.card-chev svg { width: 14px; height: 14px; }
+.card.open .card-chev { transform: rotate(180deg); color: var(--a); }
+.card-body { max-height: 0; overflow: hidden; transition: max-height 0.4s var(--ease); }
+.card-body-inner { padding: 0 20px 20px 56px; border-top: 1px solid var(--b-1); padding-top: 18px; }
+@media (max-width: 600px) { .card-body-inner { padding-left: 20px; } }
+.resp-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--a); font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.resp-label::after { content: ''; flex: 1; height: 1px; background: var(--a-d2); }
+.resp-text { font-size: 14px; color: var(--t-2); line-height: 1.7; font-weight: 300; }
+.resp-text strong { color: var(--t-1); font-weight: 500; }
+.resp-text em { font-style: italic; color: var(--a-3); }
+.resp-by { margin-top: 14px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.resp-by-left { display: flex; align-items: center; gap: 8px; }
+.avatar { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 600; flex-shrink: 0; }
+.avatar-doc { background: var(--a-d); color: var(--a); }
+.avatar-alu { background: var(--t-tab); color: var(--t-tab-fg); }
+.by-text { font-size: 12px; color: var(--t-3); }
+#empty { display: none; text-align: center; padding: 60px 20px; color: var(--t-3); border: 1px dashed var(--b-1); border-radius: var(--r-lg); background: var(--bg-1); }
+#empty .empty-icon { font-family: 'Fraunces', serif; font-size: 36px; margin-bottom: 14px; opacity: 0.4; color: var(--a); }
+#empty p { font-size: 14px; }
+mark { background: var(--a-d2); color: var(--a-2); border-radius: 3px; padding: 0 2px; }
+.progress-mini { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--t-3); }
+.progress-mini-bar { width: 80px; height: 4px; background: var(--bg-3); border-radius: 2px; overflow: hidden; }
+.progress-mini-fill { height: 100%; background: linear-gradient(90deg, var(--a) 0%, var(--a-2) 100%); border-radius: 2px; transition: width 0.4s var(--ease); }
+
+.theory-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+.theory-card { background: var(--bg-2); border: 1px solid var(--b-1); border-radius: var(--r-lg); overflow: hidden; transition: border-color 0.2s; }
+.theory-card:hover { border-color: var(--b-2); }
+.theory-card-h { padding: 20px 24px; border-bottom: 1px solid var(--b-1); display: flex; align-items: center; gap: 14px; }
+.theory-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-size: 15px; font-weight: 500; flex-shrink: 0; }
+.theory-icon.tab { background: var(--t-tab); color: var(--t-tab-fg); }
+.theory-icon.p1  { background: var(--t-1pp); color: var(--t-1pp-fg); }
+.theory-icon.p2  { background: var(--t-2pp); color: var(--t-2pp-fg); }
+.theory-icon.ent { background: var(--t-ent); color: var(--t-ent-fg); }
+.theory-icon.exg { background: var(--t-exg); color: var(--t-exg-fg); }
+.theory-icon.cic { background: var(--t-cic); color: var(--t-cic-fg); }
+.theory-title { font-family: 'Fraunces', serif; font-size: 21px; font-weight: 500; color: var(--t-1); letter-spacing: -0.01em; line-height: 1.2; }
+.theory-meta { font-size: 11px; color: var(--t-3); margin-top: 2px; letter-spacing: 0.04em; }
+.theory-body { padding: 22px 24px 26px; }
+.t-section { margin-bottom: 22px; }
+.t-section:last-child { margin-bottom: 0; }
+.t-section-h { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--t-3); margin-bottom: 10px; }
+.t-text { font-size: 14px; color: var(--t-2); line-height: 1.7; font-weight: 300; }
+.t-text strong { color: var(--t-1); font-weight: 500; }
+.t-text em { font-style: italic; color: var(--a-2); }
+.t-text + .t-text { margin-top: 10px; }
+.t-eq { display: block; background: var(--bg-1); border: 1px solid var(--b-1); border-radius: var(--r-md); padding: 16px 18px; margin: 14px 0; text-align: center; font-size: 18px; position: relative; overflow-x: auto; }
+.t-eq-cap { position: absolute; top: -8px; left: 14px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; background: var(--bg-2); color: var(--t-3); padding: 0 8px; font-weight: 500; }
+.t-list { list-style: none; margin: 10px 0; }
+.t-list li { padding-left: 22px; position: relative; margin-bottom: 8px; font-size: 14px; color: var(--t-2); line-height: 1.6; font-weight: 300; }
+.t-list li::before { content: ''; position: absolute; left: 6px; top: 10px; width: 4px; height: 4px; background: var(--a); border-radius: 50%; }
+.t-list li strong { color: var(--t-1); font-weight: 500; }
+.t-callout { background: rgba(248,113,113,0.06); border: 1px solid rgba(248,113,113,0.18); border-left: 3px solid var(--err); border-radius: var(--r-md); padding: 14px 16px; margin: 14px 0; }
+.t-callout.warn { background: rgba(251,191,36,0.06); border-color: rgba(251,191,36,0.18); border-left-color: var(--warn); }
+.t-callout.info { background: rgba(96,165,250,0.06); border-color: rgba(96,165,250,0.18); border-left-color: var(--info); }
+.t-callout-h { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--err); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.t-callout.warn .t-callout-h { color: var(--warn); }
+.t-callout.info .t-callout-h { color: var(--info); }
+.t-callout-text { font-size: 13.5px; color: var(--t-2); line-height: 1.6; }
+.t-callout-text strong { color: var(--t-1); font-weight: 500; }
+.t-related { margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--b-1); font-size: 12px; color: var(--t-3); }
+.t-related-h { text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; font-size: 10px; margin-bottom: 8px; }
+.t-related-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+.t-pill { font-size: 11px; background: var(--bg-3); border: 1px solid var(--b-1); color: var(--t-2); padding: 4px 10px; border-radius: 100px; cursor: pointer; text-decoration: none; font-family: inherit; transition: all 0.15s; }
+.t-pill:hover { border-color: var(--a-d2); color: var(--a-2); background: var(--a-d); }
+
+.diag-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.diag-card { background: var(--bg-2); border: 1px solid var(--b-1); border-radius: var(--r-lg); padding: 22px 24px 24px; overflow: hidden; }
+.diag-h { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; gap: 14px; }
+.diag-title { font-family: 'Fraunces', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+.diag-desc { font-size: 13px; color: var(--t-3); margin-bottom: 18px; font-weight: 300; }
+.diag-svg-wrap { background: var(--bg-1); border: 1px solid var(--b-1); border-radius: var(--r-md); padding: 20px; margin-bottom: 16px; position: relative; overflow: hidden; }
+[data-theme="light"] .diag-svg-wrap { background: #fdfaf3; }
+.diag-svg-wrap svg { width: 100%; height: auto; display: block; }
+.diag-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.diag-toggle { font-family: inherit; font-size: 12px; font-weight: 500; padding: 6px 12px; border-radius: 100px; border: 1px solid var(--b-1); background: transparent; color: var(--t-2); cursor: pointer; transition: all 0.18s var(--ease); display: flex; align-items: center; gap: 6px; }
+.diag-toggle::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--t-3); transition: background 0.15s; }
+.diag-toggle:hover { border-color: var(--b-2); color: var(--t-1); }
+.diag-toggle.active { background: var(--a-d); border-color: var(--a-d2); color: var(--a-2); }
+.diag-toggle.active::before { background: var(--a); box-shadow: 0 0 6px var(--a-2); }
+.diag-toggle[data-color="red"]::before    { background: #f87171; }
+.diag-toggle[data-color="green"]::before  { background: #4ade80; }
+.diag-toggle[data-color="blue"]::before   { background: #60a5fa; }
+.diag-toggle[data-color="purple"]::before { background: #c084f5; }
+.diag-toggle[data-color="amber"]::before  { background: #fbbf24; }
+.diag-toggle[data-color="teal"]::before   { background: #5fd0c4; }
+.diag-toggle[data-color="pink"]::before   { background: #f07585; }
+.diag-explainer { font-size: 13px; color: var(--t-2); line-height: 1.7; background: var(--bg-1); border-left: 2px solid var(--a); padding: 12px 14px; border-radius: 0 var(--r-md) var(--r-md) 0; font-weight: 300; margin-top: 6px; }
+.diag-explainer strong { color: var(--t-1); font-weight: 500; }
+.svg-axis { stroke: var(--t-3); stroke-width: 1.2; fill: none; }
+.svg-tick { stroke: var(--t-3); stroke-width: 0.8; }
+.svg-grid { stroke: var(--b-1); stroke-width: 0.5; stroke-dasharray: 2 2; fill: none; }
+.svg-label-axis { fill: var(--t-3); font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+.svg-label-pt { fill: var(--t-1); font-family: 'Fraunces', serif; font-size: 13px; font-weight: 500; }
+.svg-label-proc { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500; }
+.svg-curve { stroke-width: 2; fill: none; transition: opacity 0.25s, stroke-width 0.25s; }
+.svg-curve.dim { opacity: 0.18; }
+.svg-curve.highlight { stroke-width: 3; }
+.svg-pt { fill: var(--t-1); stroke: var(--bg-1); stroke-width: 1.5; }
+.svg-area { transition: opacity 0.25s; }
+
+.calc-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.calc-card { background: var(--bg-2); border: 1px solid var(--b-1); border-radius: var(--r-lg); padding: 22px 24px 24px; }
+.calc-title { font-family: 'Fraunces', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; margin-bottom: 4px; }
+.calc-formula { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--a-2); margin-bottom: 18px; background: var(--bg-1); display: inline-block; padding: 4px 10px; border-radius: 6px; border: 1px solid var(--b-1); }
+.calc-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+@media (max-width: 600px) { .calc-row { grid-template-columns: 1fr; } }
+.calc-input-group label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--t-3); margin-bottom: 6px; font-weight: 500; }
+.calc-input-group { display: flex; flex-direction: column; }
+.calc-input-wrap { position: relative; display: flex; align-items: center; }
+.calc-input { width: 100%; background: var(--bg-1); border: 1px solid var(--b-1); border-radius: var(--r-md); padding: 10px 50px 10px 14px; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--t-1); outline: none; transition: all 0.2s; }
+.calc-input:focus { border-color: var(--a-d2); box-shadow: 0 0 0 3px var(--a-d3); }
+.calc-unit { position: absolute; right: 12px; font-size: 11px; color: var(--t-3); font-family: 'JetBrains Mono', monospace; pointer-events: none; }
+.calc-result { margin-top: 18px; padding: 18px; background: var(--bg-1); border: 1px solid var(--a-d2); border-radius: var(--r-md); text-align: center; }
+.calc-result-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--a); margin-bottom: 6px; font-weight: 600; }
+.calc-result-val { font-family: 'Fraunces', serif; font-size: 30px; font-weight: 500; color: var(--t-1); letter-spacing: -0.02em; line-height: 1.1; }
+.calc-result-unit { font-size: 14px; color: var(--t-3); margin-left: 4px; font-family: 'JetBrains Mono', monospace; }
+.calc-warn { margin-top: 12px; padding: 10px 14px; background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.2); border-radius: var(--r-md); font-size: 12.5px; color: var(--warn); display: none; }
+.calc-warn.show { display: block; }
+.calc-warn strong { color: var(--t-1); font-weight: 500; }
+.calc-extra { margin-top: 12px; font-size: 12px; color: var(--t-3); font-family: 'JetBrains Mono', monospace; text-align: center; }
+
+/* Concept map */
+.map-node { cursor: pointer; transition: opacity 0.2s; }
+.map-node:hover { opacity: 0.8; }
+
+footer { margin-top: 80px; padding: 40px 0 60px; border-top: 1px solid var(--b-1); display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 12px; color: var(--t-3); }
+footer a { color: var(--t-3); text-decoration: none; border: 1px solid var(--b-1); padding: 6px 14px; border-radius: 100px; transition: all 0.18s; }
+footer a:hover { border-color: var(--b-2); color: var(--t-1); }
+footer .heart { color: var(--a); }
+[hidden] { display: none !important; }
+.formula-inline { font-family: 'JetBrains Mono', monospace; font-size: 0.92em; background: var(--bg-3); padding: 1px 5px; border-radius: 3px; color: var(--a-2); }
+@media print {
+  body { background: white; color: black; }
+  .topbar, .tabs, .toolbar, .results-bar, .icon-btn, .card-chev, footer, .hero-deco, .diag-controls, .calc-input { display: none !important; }
+  .panel { display: block !important; }
+  .card { break-inside: avoid; border: 1px solid #ccc; box-shadow: none; }
+  .card-body { max-height: none !important; }
+  .card-body-inner { padding: 16px !important; }
+  .hero-title { color: black; }
+}
+</style>
+</head>
+<body data-theme="dark">
+
+<div class="topbar">
+  <div class="topbar-inner app">
+    <div class="brand">
+      <div class="brand-logo">T</div>
+      <span>Consultas <span class="brand-sub">/ Transformación de la Energía</span></span>
+    </div>
+    <div class="topbar-spacer"></div>
+    <button class="topbar-btn" onclick="window.print()" title="Imprimir o exportar a PDF">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      <span class="hide-mobile">Imprimir</span>
+    </button>
+    <button class="topbar-btn theme-toggle" onclick="toggleTheme()" id="themeBtn" title="Cambiar tema">
+      <svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="app">
+
+<section class="hero">
+  <div class="hero-eyebrow">UBA · Grupo de consultas activo</div>
+  <h1 class="hero-title">Hub de <em>Consultas</em><br>Transformación de la Energía</h1>
+  <p class="hero-sub">23 consultas reales del grupo, integradas con teoría oficial, diagramas interactivos y herramientas de cálculo. Del 19 de marzo al 2 de mayo de 2026.</p>
+  <div class="hero-deco">
+    <svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="curveGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f0843d" stop-opacity="0.6"/><stop offset="100%" stop-color="#ffac6f" stop-opacity="0.1"/></linearGradient></defs>
+      <path d="M30,180 Q60,80 200,40" stroke="url(#curveGrad)" stroke-width="1.2" fill="none" opacity="0.7"/>
+      <path d="M30,180 Q70,110 200,70" stroke="url(#curveGrad)" stroke-width="1.2" fill="none" opacity="0.5"/>
+      <path d="M30,180 Q80,140 200,100" stroke="url(#curveGrad)" stroke-width="1.2" fill="none" opacity="0.35"/>
+      <path d="M30,180 Q90,160 200,135" stroke="url(#curveGrad)" stroke-width="1.2" fill="none" opacity="0.22"/>
+      <text x="200" y="32" fill="#f0843d" font-family="JetBrains Mono" font-size="9" opacity="0.5">T₁</text>
+      <text x="200" y="62" fill="#f0843d" font-family="JetBrains Mono" font-size="9" opacity="0.4">T₂</text>
+      <text x="200" y="92" fill="#f0843d" font-family="JetBrains Mono" font-size="9" opacity="0.3">T₃</text>
+      <line x1="30" y1="180" x2="220" y2="180" stroke="#444b5e" stroke-width="0.8"/>
+      <line x1="30" y1="20" x2="30" y2="180" stroke="#444b5e" stroke-width="0.8"/>
+      <text x="220" y="195" fill="#6b7387" font-family="JetBrains Mono" font-size="10">v</text>
+      <text x="14" y="25" fill="#6b7387" font-family="JetBrains Mono" font-size="10">P</text>
+    </svg>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="stat"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="stat-num" data-counter="23">0</div><div class="stat-label">Consultas totales</div></div>
+  <div class="stat"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><div class="stat-num" data-counter="7">0</div><div class="stat-label">Temas distintos</div></div>
+  <div class="stat"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div class="stat-num" data-counter="7">0</div><div class="stat-label">Semanas activas</div></div>
+  <div class="stat"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="stat-num" data-counter="14">0</div><div class="stat-label">Resp. de docentes</div></div>
+</section>
+
+<nav class="tabs" role="tablist">
+  <button class="tab active" data-panel="inicio" role="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Inicio</button>
+  <button class="tab" data-panel="consultas" role="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Consultas <span style="opacity:0.55">23</span></button>
+  <button class="tab" data-panel="teoria" role="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Teoría</button>
+  <button class="tab" data-panel="diagramas" role="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Diagramas</button>
+  <button class="tab" data-panel="calc" role="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="10" y2="18"/><line x1="14" y1="18" x2="16" y2="18"/></svg>Calculadoras</button>
+  <button class="tab" data-panel="mapa" role="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Mapa</button>
+</nav>
+
+<!-- ═══════════════════ PANEL: INICIO ═══════════════════ -->
+<section id="panel-inicio" class="panel active">
+  <h2 class="panel-h">Panel de <em>Inicio</em></h2>
+  <p class="panel-sub">Resumen de actividad y distribución temática del grupo.</p>
+  <div class="dash-grid">
+    <div class="dash-card">
+      <div class="dash-card-h">
+        <div class="dash-card-title">Actividad temporal</div>
+        <div class="dash-card-meta">Mar–May 2026</div>
+      </div>
+      <div id="heatmap"></div>
+      <div class="heatmap-legend">
+        <span>Menos</span>
+        <div class="heatmap-legend-cell" style="background:var(--bg-3)"></div>
+        <div class="heatmap-legend-cell" style="background:rgba(240,132,61,0.25)"></div>
+        <div class="heatmap-legend-cell" style="background:rgba(240,132,61,0.55)"></div>
+        <div class="heatmap-legend-cell" style="background:rgba(240,132,61,0.85)"></div>
+        <div class="heatmap-legend-cell" style="background:var(--a)"></div>
+        <span>Más</span>
+      </div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-card-h">
+        <div class="dash-card-title">Distribución por tema</div>
+        <div class="dash-card-meta">23 consultas</div>
+      </div>
+      <div class="dist-list" id="distList"></div>
+    </div>
+  </div>
+  <div class="insights">
+    <div class="insight-card warn">
+      <div class="insight-h">⚠ Error frecuente</div>
+      <div class="insight-text">Usar <strong>Cp·ΔT para vapor</strong> como si fuera gas ideal. El vapor de agua no es gas ideal: siempre usá tablas termodinámicas.</div>
+    </div>
+    <div class="insight-card info">
+      <div class="insight-h">💡 Tip práctico</div>
+      <div class="insight-text">Cuando tenés <strong>P y v</strong>, compará con v_f y v_g de la tabla a esa presión para identificar el estado del fluido.</div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-h">🔑 Clave del parcial</div>
+      <div class="insight-text">Entra <strong>teoría de MT y MF</strong>. El rendimiento de Carnot exige siempre <strong>Kelvin</strong>, nunca Celsius.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ PANEL: CONSULTAS ═══════════════════ -->
+<section id="panel-consultas" class="panel">
+  <h2 class="panel-h"><em>23</em> Consultas del grupo</h2>
+  <p class="panel-sub">Hacé clic en una consulta para ver la respuesta. Podés marcarlas como favoritas o revisadas.</p>
+  <div class="toolbar">
+    <div class="search-wrap">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="search" class="search-input" type="text" placeholder="Buscar en preguntas y respuestas…" autocomplete="off" spellcheck="false">
+      <span class="search-shortcut">Ctrl K</span>
+    </div>
+    <div class="filter-row">
+      <button class="filter-btn active" data-cat="all">Todas <span class="count">23</span></button>
+      <button class="filter-btn" data-cat="tab">Tablas <span class="count">4</span></button>
+      <button class="filter-btn" data-cat="1pp">1° Principio <span class="count">4</span></button>
+      <button class="filter-btn" data-cat="2pp">2° Principio <span class="count">4</span></button>
+      <button class="filter-btn" data-cat="ent">Entropía <span class="count">3</span></button>
+      <button class="filter-btn" data-cat="cic">Ciclos <span class="count">4</span></button>
+      <button class="filter-btn" data-cat="exg">Exergía <span class="count">3</span></button>
+      <button class="filter-btn" data-cat="gen">General <span class="count">1</span></button>
+      <button class="filter-btn" data-special="bookmarked">⭐ Favoritas <span class="count" id="bookCount">0</span></button>
+    </div>
+  </div>
+  <div class="results-bar">
+    <div class="progress-mini">
+      <span>Revisadas: <strong id="reviewedCount">0</strong>/23</span>
+      <div class="progress-mini-bar"><div class="progress-mini-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+    <div class="results-actions">
+      <button onclick="toggleSort()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><span id="sortLabel">Más reciente</span></button>
+      <button onclick="expandAll()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>Expandir todo</button>
+      <button onclick="collapseAll()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>Colapsar</button>
+    </div>
+  </div>
+  <div id="cardList"></div>
+  <div id="empty"><div class="empty-icon">∅</div><p>No hay consultas que coincidan con tu búsqueda.</p></div>
+</section>
+
+<!-- ═══════════════════ PANEL: TEORÍA ═══════════════════ -->
+<section id="panel-teoria" class="panel">
+  <h2 class="panel-h">Resumen de <em>Teoría</em></h2>
+  <p class="panel-sub">Conceptos clave organizados por tema, basados en las preguntas del grupo.</p>
+  <div class="theory-grid">
+
+    <div class="theory-card">
+      <div class="theory-card-h">
+        <div class="theory-icon tab">T</div>
+        <div><div class="theory-title">Tablas termodinámicas</div><div class="theory-meta">Tablas A-4 a A-8 de Cengel · Agua y refrigerante</div></div>
+      </div>
+      <div class="theory-body">
+        <div class="t-section">
+          <div class="t-section-h">Identificación del estado</div>
+          <p class="t-text">Dados P y v, comparar con <strong>v<sub>f</sub></strong> y <strong>v<sub>g</sub></strong> a esa presión. Si v<sub>f</sub> &lt; v &lt; v<sub>g</sub>: mezcla. Si v &lt; v<sub>f</sub>: líquido subenfriado. Si v &gt; v<sub>g</sub>: vapor sobrecalentado.</p>
+        </div>
+        <div class="t-section">
+          <div class="t-section-h">Título de vapor</div>
+          <div class="t-eq"><span class="t-eq-cap">Título</span>x = (v − v<sub>f</sub>) / (v<sub>g</sub> − v<sub>f</sub>)</div>
+          <p class="t-text">Cualquier propiedad en mezcla: <strong>y = y<sub>f</sub> + x·(y<sub>g</sub> − y<sub>f</sub>)</strong></p>
+        </div>
+        <div class="t-section">
+          <div class="t-section-h">Interpolación lineal</div>
+          <div class="t-eq"><span class="t-eq-cap">Interpolación</span>y = y₁ + (y₂−y₁)·(x−x₁)/(x₂−x₁)</div>
+          <p class="t-text">Usada cuando el dato no aparece directamente en tabla (ej. vapor sobrecalentado a 180 °C).</p>
+        </div>
+        <div class="t-callout info">
+          <div class="t-callout-h">ℹ Unidades de temperatura</div>
+          <div class="t-callout-text">C<sub>p</sub> en kJ/kg·°C y kJ/kg·K tienen <strong>el mismo valor numérico</strong>. Un grado Celsius = un Kelvin en diferencias de temperatura.</div>
+        </div>
+        <div class="t-related"><div class="t-related-h">Consultas relacionadas</div><div class="t-related-pills"><button class="t-pill" data-jump="1">C1 Interpolación 180°C</button><button class="t-pill" data-jump="2">C2 Estado con P y v</button><button class="t-pill" data-jump="3">C3 Tablas a usar</button><button class="t-pill" data-jump="11">C11 Cp en °C vs K</button></div></div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <div class="theory-card-h">
+        <div class="theory-icon p1">1</div>
+        <div><div class="theory-title">Primer Principio</div><div class="theory-meta">Conservación de energía · Sistemas abiertos y cerrados</div></div>
+      </div>
+      <div class="theory-body">
+        <div class="t-section">
+          <div class="t-section-h">Sistema cerrado</div>
+          <div class="t-eq"><span class="t-eq-cap">1° Principio</span>ΔU = Q − W</div>
+          <p class="t-text">W de expansión: <strong>W = ∫P·dv</strong>. Si el volumen varía, el volumen específico no puede sacarse de la integral.</p>
+        </div>
+        <div class="t-section">
+          <div class="t-section-h">Sistema abierto (régimen no estacionario)</div>
+          <div class="t-eq"><span class="t-eq-cap">Balance energía</span>dU/dt = Q̇ − Ẇ + ṁ<sub>e</sub>·h<sub>e</sub> − ṁ<sub>s</sub>·h<sub>s</sub></div>
+          <p class="t-text">En llenado de tanque con Q=W=0: ΔU = ṁ<sub>e</sub>·h<sub>e</sub> → la energía interna <strong>aumenta</strong>.</p>
+        </div>
+        <div class="t-section">
+          <div class="t-section-h">Intercambiador de calor</div>
+          <p class="t-text">Q cedido por el vapor = Q absorbido por el río. Para el río (líquido incompresible): <strong>Q = ṁ·c<sub>p</sub>·ΔT</strong></p>
+        </div>
+        <div class="t-callout">
+          <div class="t-callout-h">⚠ Error frecuente</div>
+          <div class="t-callout-text">ΔH = C<sub>p</sub>·ΔT y ΔU = C<sub>v</sub>·ΔT <strong>solo son válidas para gases ideales</strong>. El vapor de agua NO es gas ideal: usá tablas.</div>
+        </div>
+        <div class="t-related"><div class="t-related-h">Consultas relacionadas</div><div class="t-related-pills"><button class="t-pill" data-jump="4">C4 Llenado de tanque</button><button class="t-pill" data-jump="5">C5 Ej. 3.5</button><button class="t-pill" data-jump="6">C6 Condensador y río</button><button class="t-pill" data-jump="7">C7 W pistón ΔV</button></div></div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <div class="theory-card-h">
+        <div class="theory-icon p2">2</div>
+        <div><div class="theory-title">Segundo Principio · Ciclo de Carnot</div><div class="theory-meta">Rendimiento máximo · MT y MF</div></div>
+      </div>
+      <div class="theory-body">
+        <div class="t-section">
+          <div class="t-section-h">Ciclo de Carnot</div>
+          <p class="t-text">4 procesos: <strong>isotérmica a T<sub>H</sub></strong> → <strong>adiabática reversible</strong> → <strong>isotérmica a T<sub>L</sub></strong> → <strong>adiabática reversible</strong>. Es ideal; no existe en la práctica.</p>
+          <div class="t-eq"><span class="t-eq-cap">Rendimiento</span>η = 1 − T<sub>L</sub>/T<sub>H</sub></div>
+          <p class="t-text"><strong>Siempre en Kelvin.</strong> La expansión isotérmica puede salir de la campana de saturación (proceso ideal).</p>
+        </div>
+        <div class="t-callout warn">
+          <div class="t-callout-h">⚠ Temperatura siempre en Kelvin</div>
+          <div class="t-callout-text">Usar °C en η = 1 − T<sub>L</sub>/T<sub>H</sub> da resultados incorrectos. La escala Celsius tiene cero arbitrario.</div>
+        </div>
+        <div class="t-related"><div class="t-related-h">Consultas relacionadas</div><div class="t-related-pills"><button class="t-pill" data-jump="12">C12 Ciclo de Carnot</button><button class="t-pill" data-jump="13">C13 Proceso 2→3</button><button class="t-pill" data-jump="14">C14 Kelvin vs Celsius</button><button class="t-pill" data-jump="15">C15 Campana saturación</button><button class="t-pill" data-jump="20">C20 Parcial</button></div></div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <div class="theory-card-h">
+        <div class="theory-icon ent">S</div>
+        <div><div class="theory-title">Entropía</div><div class="theory-meta">2° Ley · Gases ideales · Procesos isoentrópicos</div></div>
+      </div>
+      <div class="theory-body">
+        <div class="t-section">
+          <div class="t-section-h">Gas ideal vs vapor</div>
+          <p class="t-text">El <strong>aire es gas ideal</strong>: no usar tablas, aplicar ecuaciones de gas ideal. Para proceso isoentrópico:</p>
+          <div class="t-eq"><span class="t-eq-cap">Adiabática reversible</span>T₂/T₁ = (P₂/P₁)<sup>(k−1)/k</sup></div>
+          <p class="t-text">con k = C<sub>p</sub>/C<sub>v</sub>. El vapor de agua <strong>sí</strong> usa tablas.</p>
+        </div>
+        <div class="t-section">
+          <div class="t-section-h">Entropía de sistema total</div>
+          <p class="t-text">Con dos masas separadas: <strong>ΔS<sub>total</sub> = ΔS<sub>m1</sub> + ΔS<sub>m2</sub></strong>. Cada masa usa su estado inicial propio y el mismo estado final.</p>
+        </div>
+        <div class="t-section">
+          <div class="t-section-h">Resistencia eléctrica a T=cte</div>
+          <p class="t-text">ΔS<sub>resistencia</sub> = 0 (no cambia de estado). Pero la conversión de trabajo eléctrico en calor es <strong>irreversible</strong>. El dato T sirve para: ΔS<sub>medio</sub> = Q/T.</p>
+        </div>
+        <div class="t-related"><div class="t-related-h">Consultas relacionadas</div><div class="t-related-pills"><button class="t-pill" data-jump="8">C8 Aire adiabático</button><button class="t-pill" data-jump="9">C9 Dos masas</button><button class="t-pill" data-jump="10">C10 Resistencia T=cte</button></div></div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <div class="theory-card-h">
+        <div class="theory-icon cic">C</div>
+        <div><div class="theory-title">Ciclos y máquinas térmicas</div><div class="theory-meta">Eficiencia isoentrópica · Turbinas y compresores</div></div>
+      </div>
+      <div class="theory-body">
+        <div class="t-section">
+          <div class="t-section-h">Eficiencia isoentrópica</div>
+          <p class="t-text">Para turbina (vapor): <strong>η<sub>iso</sub> = ΔH<sub>real</sub>/ΔH<sub>ideal</sub></strong>. El estado ideal 4' tiene s<sub>4'</sub> = s<sub>entrada</sub> y la misma P de salida.</p>
+          <p class="t-text">La bomba es un compresor para líquidos: misma fórmula, misma lógica.</p>
+        </div>
+        <div class="t-section">
+          <div class="t-section-h">Pistón en equilibrio</div>
+          <p class="t-text">Si el pistón está en equilibrio mecánico en ambos estados: <strong>P<sub>i</sub> = P<sub>f</sub></strong>, aunque el enunciado no lo diga explícitamente. Siempre se trabaja de equilibrio a equilibrio.</p>
+        </div>
+        <div class="t-callout">
+          <div class="t-callout-h">⚠ Vapor ≠ Gas ideal</div>
+          <div class="t-callout-text">ΔH = C<sub>p</sub>·ΔT <strong>no aplica al vapor sobrecalentado</strong>. Siempre usar tablas para agua/vapor.</div>
+        </div>
+        <div class="t-related"><div class="t-related-h">Consultas relacionadas</div><div class="t-related-pills"><button class="t-pill" data-jump="16">C16 Eficiencia bomba</button><button class="t-pill" data-jump="17">C17 Cp de agua vs aire</button><button class="t-pill" data-jump="18">C18 η turbina vapor</button><button class="t-pill" data-jump="19">C19 Pistón P_i = P_f</button></div></div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <div class="theory-card-h">
+        <div class="theory-icon exg">X</div>
+        <div><div class="theory-title">Exergía</div><div class="theory-meta">Destrucción · Variación del universo</div></div>
+      </div>
+      <div class="theory-body">
+        <div class="t-section">
+          <div class="t-section-h">Variación de exergía del universo</div>
+          <div class="t-eq"><span class="t-eq-cap">Destrucción exergía</span>ΔX<sub>univ</sub> = −T₀·ΔS<sub>univ</sub></div>
+          <p class="t-text">La destrucción de exergía de un equipo = |ΔX<sub>universo</sub>| del sistema "zoom in" que solo incluye ese equipo.</p>
+        </div>
+        <div class="t-section">
+          <div class="t-section-h">Quién integra el universo</div>
+          <p class="t-text">El universo termodinámico incluye <strong>todo lo que participa</strong>. El trabajo siempre tiene un receptor útil (generador eléctrico, etc.).</p>
+        </div>
+        <div class="t-related"><div class="t-related-h">Consultas relacionadas</div><div class="t-related-pills"><button class="t-pill" data-jump="21">C21 ΔX compresor</button><button class="t-pill" data-jump="22">C22 ΔX turbina</button><button class="t-pill" data-jump="23">C23 Destrucción exergía</button></div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════ PANEL: DIAGRAMAS ═══════════════════ -->
+<section id="panel-diagramas" class="panel">
+  <h2 class="panel-h">Diagramas <em>interactivos</em></h2>
+  <p class="panel-sub">Hacé clic en los botones para resaltar procesos y ver explicaciones.</p>
+  <div class="diag-grid">
+
+    <!-- Diagrama 1: T-s agua -->
+    <div class="diag-card">
+      <div class="diag-h"><div class="diag-title">Diagrama T-s · Agua</div></div>
+      <p class="diag-desc">Diagrama temperatura-entropía mostrando las regiones de fase del agua.</p>
+      <div class="diag-svg-wrap">
+        <svg viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg">
+          <line x1="50" y1="270" x2="530" y2="270" class="svg-axis"/>
+          <line x1="50" y1="10" x2="50" y2="270" class="svg-axis"/>
+          <text x="540" y="274" class="svg-label-axis">s</text>
+          <text x="38" y="15" class="svg-label-axis">T</text>
+          <!-- campana de saturación -->
+          <path d="M50,230 Q150,60 280,40 Q410,60 510,230" class="svg-curve" stroke="#6fb1f0" stroke-dasharray="none"/>
+          <line x1="50" y1="230" x2="510" y2="230" stroke="var(--b-2)" stroke-width="1" stroke-dasharray="4 3"/>
+          <!-- región líquido subenfriado -->
+          <text x="80" y="180" class="svg-label-axis" fill="var(--t-cic-fg)">Líquido</text>
+          <text x="72" y="195" class="svg-label-axis" fill="var(--t-cic-fg)">subenfriado</text>
+          <!-- región mezcla -->
+          <text x="240" y="160" class="svg-label-axis" fill="var(--t-2pp-fg)">Mezcla</text>
+          <text x="228" y="175" class="svg-label-axis" fill="var(--t-2pp-fg)">liq.−vapor</text>
+          <!-- región vapor -->
+          <text x="390" y="180" class="svg-label-axis" fill="var(--t-tab-fg)">Vapor</text>
+          <text x="370" y="195" class="svg-label-axis" fill="var(--t-tab-fg)">sobrecalentado</text>
+          <!-- punto crítico -->
+          <circle cx="280" cy="40" r="5" class="svg-pt" fill="#f0843d"/>
+          <text x="286" y="36" class="svg-label-axis" fill="var(--a)">Punto crítico</text>
+          <!-- punto en mezcla -->
+          <circle cx="280" cy="240" id="satPoint" r="6" class="svg-pt" fill="var(--a)" style="transition:cx 0.3s,cy 0.3s"/>
+        </svg>
+      </div>
+      <div class="diag-controls">
+        <button class="diag-toggle active" data-region="liq">Líquido subenfriado</button>
+        <button class="diag-toggle" data-region="mix">Mezcla</button>
+        <button class="diag-toggle" data-region="vap">Vapor sobrecalentado</button>
+      </div>
+      <div class="diag-explainer" id="satExpl">Hacé clic en una región para ver su explicación y la fórmula correspondiente.</div>
+    </div>
+
+    <!-- Diagrama 2: P-v politrópicas -->
+    <div class="diag-card">
+      <div class="diag-h"><div class="diag-title">Diagrama P-v · Politrópicas</div></div>
+      <p class="diag-desc">Procesos termodinámicos clásicos de gases ideales. El área bajo la curva = trabajo.</p>
+      <div class="diag-svg-wrap">
+        <svg id="svgPv" viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg">
+          <line x1="50" y1="260" x2="530" y2="260" class="svg-axis"/>
+          <line x1="50" y1="10" x2="50" y2="260" class="svg-axis"/>
+          <text x="540" y="264" class="svg-label-axis">v</text>
+          <text x="36" y="18" class="svg-label-axis">P</text>
+          <!-- Isóbara (horizontal) -->
+          <line x1="80" y1="120" x2="480" y2="120" class="svg-curve" stroke="#4ade80" data-proc="iso-p"/>
+          <text x="490" y="124" class="svg-label-proc" fill="#4ade80" data-proc="iso-p">P=cte</text>
+          <!-- Isócora (vertical) -->
+          <line x1="200" y1="30" x2="200" y2="260" class="svg-curve" stroke="#60a5fa" data-proc="iso-v"/>
+          <text x="206" y="25" class="svg-label-proc" fill="#60a5fa" data-proc="iso-v">v=cte</text>
+          <!-- Isoterma -->
+          <path d="M80,220 Q200,80 480,40" class="svg-curve" stroke="#fbbf24" data-proc="iso-t"/>
+          <text x="490" y="38" class="svg-label-proc" fill="#fbbf24" data-proc="iso-t">T=cte</text>
+          <!-- Adiabática (más empinada) -->
+          <path d="M80,250 Q160,60 480,28" class="svg-curve" stroke="#f87171" data-proc="adiab"/>
+          <text x="490" y="26" class="svg-label-proc" fill="#f87171" data-proc="adiab">Q=0</text>
+        </svg>
+      </div>
+      <div class="diag-controls">
+        <button class="diag-toggle active" data-proc="all">Todos</button>
+        <button class="diag-toggle" data-proc="iso-p" data-color="green">Isóbara</button>
+        <button class="diag-toggle" data-proc="iso-v" data-color="blue">Isócora</button>
+        <button class="diag-toggle" data-proc="iso-t" data-color="amber">Isoterma</button>
+        <button class="diag-toggle" data-proc="adiab" data-color="red">Adiabática</button>
+      </div>
+      <div class="diag-explainer" id="pvExpl">En todas las politrópicas el calor específico C permanece constante. El área bajo cada curva representa el trabajo de expansión <span class="formula-inline">W = ∫ P·dv</span>. Para la <strong>adiabática</strong>, además, vale <span class="formula-inline">P·v<sup>k</sup> = cte</span>.</div>
+    </div>
+
+    <!-- Diagrama 3: Ciclo de Carnot en T-s -->
+    <div class="diag-card">
+      <div class="diag-h"><div class="diag-title">Ciclo de Carnot · Diagrama T-s</div></div>
+      <p class="diag-desc">El área del rectángulo = trabajo neto. Hacé clic en cada proceso para ver su análisis.</p>
+      <div class="diag-svg-wrap">
+        <svg id="svgCarnot" viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg">
+          <line x1="50" y1="260" x2="530" y2="260" class="svg-axis"/>
+          <line x1="50" y1="10" x2="50" y2="260" class="svg-axis"/>
+          <text x="540" y="264" class="svg-label-axis">s</text>
+          <text x="36" y="18" class="svg-label-axis">T</text>
+          <!-- Net work area -->
+          <rect id="netWorkArea" x="130" y="70" width="280" height="120" fill="rgba(240,132,61,0.08)" stroke="none" class="svg-area"/>
+          <text id="netWorkLabel" x="235" y="135" class="svg-label-axis" fill="var(--a)" font-size="13">W<tspan font-size="10">neto</tspan></text>
+          <!-- T_H line -->
+          <line x1="50" y1="70" x2="530" y2="70" stroke="var(--b-1)" stroke-width="0.8" stroke-dasharray="3 3"/>
+          <text x="22" y="74" class="svg-label-axis" fill="var(--a-2)">T<tspan font-size="8">H</tspan></text>
+          <!-- T_L line -->
+          <line x1="50" y1="190" x2="530" y2="190" stroke="var(--b-1)" stroke-width="0.8" stroke-dasharray="3 3"/>
+          <text x="22" y="194" class="svg-label-axis" fill="var(--t-tab-fg)">T<tspan font-size="8">L</tspan></text>
+          <!-- Proceso 1→2 (isotérmica T_H) -->
+          <line x1="130" y1="70" x2="410" y2="70" class="svg-curve" stroke="var(--a-2)" stroke-width="2.5" data-step="12"/>
+          <text x="240" y="60" class="svg-label-proc" fill="var(--a-2)" data-step="12">1→2 · Q_H</text>
+          <!-- Proceso 2→3 (adiabática) -->
+          <line x1="410" y1="70" x2="410" y2="190" class="svg-curve" stroke="#c084f5" stroke-width="2.5" data-step="23"/>
+          <text x="418" y="135" class="svg-label-proc" fill="#c084f5" data-step="23">2→3</text>
+          <!-- Proceso 3→4 (isotérmica T_L) -->
+          <line x1="410" y1="190" x2="130" y2="190" class="svg-curve" stroke="var(--t-tab-fg)" stroke-width="2.5" data-step="34"/>
+          <text x="240" y="210" class="svg-label-proc" fill="var(--t-tab-fg)" data-step="34">3→4 · Q_L</text>
+          <!-- Proceso 4→1 (adiabática) -->
+          <line x1="130" y1="190" x2="130" y2="70" class="svg-curve" stroke="#4ade80" stroke-width="2.5" data-step="41"/>
+          <text x="58" y="135" class="svg-label-proc" fill="#4ade80" data-step="41">4→1</text>
+          <!-- Puntos -->
+          <circle cx="130" cy="70" r="5" class="svg-pt" fill="var(--t-1)"/>
+          <circle cx="410" cy="70" r="5" class="svg-pt" fill="var(--t-1)"/>
+          <circle cx="410" cy="190" r="5" class="svg-pt" fill="var(--t-1)"/>
+          <circle cx="130" cy="190" r="5" class="svg-pt" fill="var(--t-1)"/>
+          <text x="118" y="60" class="svg-label-pt">1</text>
+          <text x="414" y="60" class="svg-label-pt">2</text>
+          <text x="414" y="205" class="svg-label-pt">3</text>
+          <text x="118" y="205" class="svg-label-pt">4</text>
+        </svg>
+      </div>
+      <div class="diag-controls">
+        <button class="diag-toggle active" data-step="all">Todo el ciclo</button>
+        <button class="diag-toggle" data-step="12" data-color="amber">1→2 Expansión T_H</button>
+        <button class="diag-toggle" data-step="23" data-color="purple">2→3 Adiabática</button>
+        <button class="diag-toggle" data-step="34" data-color="blue">3→4 Compresión T_L</button>
+        <button class="diag-toggle" data-step="41" data-color="green">4→1 Adiabática</button>
+      </div>
+      <div class="diag-explainer" id="carnotExpl">El <strong>área del rectángulo</strong> en T-s es el trabajo neto del ciclo. La eficiencia es <span class="formula-inline">η = 1 − T<sub>L</sub>/T<sub>H</sub></span>: depende solo de las temperaturas absolutas de los focos.</div>
+    </div>
+
+    <!-- Diagrama 4: η isoentrópica turbina en h-s -->
+    <div class="diag-card">
+      <div class="diag-h"><div class="diag-title">Eficiencia isoentrópica · Diagrama h-s</div></div>
+      <p class="diag-desc">Comparación entre proceso real e ideal en turbina o compresor.</p>
+      <div class="diag-svg-wrap">
+        <svg viewBox="0 0 560 280" xmlns="http://www.w3.org/2000/svg">
+          <line x1="50" y1="250" x2="530" y2="250" class="svg-axis"/>
+          <line x1="50" y1="10" x2="50" y2="250" class="svg-axis"/>
+          <text x="540" y="254" class="svg-label-axis">s</text>
+          <text x="36" y="18" class="svg-label-axis">h</text>
+          <!-- Proceso ideal (vertical, isoentrópica) -->
+          <line x1="250" y1="60" x2="250" y2="200" stroke="#60a5fa" stroke-width="2" stroke-dasharray="5 3"/>
+          <text x="258" y="135" class="svg-label-proc" fill="#60a5fa">Ideal (s=cte)</text>
+          <!-- Proceso real (oblicuo, mayor Δs) -->
+          <line x1="250" y1="60" x2="340" y2="180" stroke="var(--a-2)" stroke-width="2.5"/>
+          <text x="348" y="178" class="svg-label-proc" fill="var(--a-2)">Real</text>
+          <!-- Puntos -->
+          <circle cx="250" cy="60" r="6" class="svg-pt" fill="var(--t-1)"/>
+          <text x="220" y="55" class="svg-label-pt">1 (entrada)</text>
+          <circle cx="250" cy="200" r="6" class="svg-pt" fill="#60a5fa"/>
+          <text x="200" y="218" class="svg-label-pt" fill="#60a5fa">2s (ideal)</text>
+          <circle cx="340" cy="180" r="6" class="svg-pt" fill="var(--a-2)"/>
+          <text x="348" y="195" class="svg-label-pt" fill="var(--a-2)">2 (real)</text>
+          <!-- ΔH ideal -->
+          <line x1="210" y1="60" x2="210" y2="200" stroke="var(--b-2)" stroke-width="1"/>
+          <text x="158" y="135" class="svg-label-axis" fill="#60a5fa">ΔH<tspan font-size="8">ideal</tspan></text>
+          <!-- ΔH real -->
+          <line x1="175" y1="60" x2="175" y2="180" stroke="var(--b-2)" stroke-width="1"/>
+          <text x="118" y="125" class="svg-label-axis" fill="var(--a-2)">ΔH<tspan font-size="8">real</tspan></text>
+          <!-- fórmula -->
+          <text x="60" y="240" class="svg-label-axis" fill="var(--t-3)" font-size="12">η = ΔH_real / ΔH_ideal</text>
+        </svg>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════ PANEL: CALCULADORAS ═══════════════════ -->
+<section id="panel-calc" class="panel">
+  <h2 class="panel-h"><em>Calculadoras</em> termodinámicas</h2>
+  <p class="panel-sub">Herramientas de cálculo basadas en las consultas más frecuentes del grupo.</p>
+  <div class="calc-grid">
+
+    <!-- Calculadora 1: Carnot -->
+    <div class="calc-card">
+      <div class="calc-title">Rendimiento de Carnot</div>
+      <div class="calc-formula">η = 1 − T_L / T_H</div>
+      <div class="calc-row">
+        <div class="calc-input-group">
+          <label>T<sub>H</sub> · Fuente caliente</label>
+          <div class="calc-input-wrap"><input id="tHC" class="calc-input" type="number" value="600" min="1"><span class="calc-unit">K</span></div>
+        </div>
+        <div class="calc-input-group">
+          <label>T<sub>L</sub> · Fuente fría</label>
+          <div class="calc-input-wrap"><input id="tLC" class="calc-input" type="number" value="300" min="1"><span class="calc-unit">K</span></div>
+        </div>
+      </div>
+      <div class="calc-result">
+        <div class="calc-result-label">Rendimiento máximo η</div>
+        <div class="calc-result-val" id="carnotOut">—</div>
+      </div>
+      <div class="calc-warn" id="carnotWarn"></div>
+      <div class="calc-extra" id="carnotExtra"></div>
+    </div>
+
+    <!-- Calculadora 2: Adiabática reversible gas ideal -->
+    <div class="calc-card">
+      <div class="calc-title">Temperatura · Proceso isoentrópico</div>
+      <div class="calc-formula">T₂ = T₁ · (P₂/P₁)^((k−1)/k)</div>
+      <div class="calc-row">
+        <div class="calc-input-group">
+          <label>T₁ · Temperatura inicial</label>
+          <div class="calc-input-wrap"><input id="t1I" class="calc-input" type="number" value="300" min="1"><span class="calc-unit">K</span></div>
+        </div>
+        <div class="calc-input-group">
+          <label>k · C<sub>p</sub>/C<sub>v</sub></label>
+          <div class="calc-input-wrap"><input id="kI" class="calc-input" type="number" value="1.4" step="0.01" min="1.01"><span class="calc-unit">—</span></div>
+        </div>
+      </div>
+      <div class="calc-row">
+        <div class="calc-input-group">
+          <label>P₁ · Presión inicial</label>
+          <div class="calc-input-wrap"><input id="p1I" class="calc-input" type="number" value="100" min="0.001"><span class="calc-unit">kPa</span></div>
+        </div>
+        <div class="calc-input-group">
+          <label>P₂ · Presión final</label>
+          <div class="calc-input-wrap"><input id="p2I" class="calc-input" type="number" value="400" min="0.001"><span class="calc-unit">kPa</span></div>
+        </div>
+      </div>
+      <div class="calc-result">
+        <div class="calc-result-label">Temperatura final T₂</div>
+        <div class="calc-result-val" id="isoOut">—</div>
+      </div>
+      <div class="calc-extra" id="isoExtra"></div>
+    </div>
+
+    <!-- Calculadora 3: Identificador de estado -->
+    <div class="calc-card">
+      <div class="calc-title">Identificador de estado del fluido</div>
+      <div class="calc-formula">Comparar v con v_f y v_g a esa P</div>
+      <div class="calc-row">
+        <div class="calc-input-group">
+          <label>v · Volumen específico</label>
+          <div class="calc-input-wrap"><input id="vS" class="calc-input" type="number" value="0.05" step="0.001" min="0.0001"><span class="calc-unit">m³/kg</span></div>
+        </div>
+        <div class="calc-input-group">
+          <label>v<sub>f</sub> · Líquido saturado</label>
+          <div class="calc-input-wrap"><input id="vfS" class="calc-input" type="number" value="0.001" step="0.0001" min="0.00001"><span class="calc-unit">m³/kg</span></div>
+        </div>
+      </div>
+      <div class="calc-row">
+        <div class="calc-input-group">
+          <label>v<sub>g</sub> · Vapor saturado</label>
+          <div class="calc-input-wrap"><input id="vgS" class="calc-input" type="number" value="0.1" step="0.001" min="0.001"><span class="calc-unit">m³/kg</span></div>
+        </div>
+        <div class="calc-input-group"></div>
+      </div>
+      <div class="calc-result">
+        <div class="calc-result-label" id="stateLab">Estado del fluido</div>
+        <div class="calc-result-val" id="stateOut" style="font-size:20px">—</div>
+      </div>
+      <div class="calc-extra" id="stateExtra"></div>
+    </div>
+
+    <!-- Calculadora 4: Interpolación lineal -->
+    <div class="calc-card">
+      <div class="calc-title">Interpolación lineal de tablas</div>
+      <div class="calc-formula">y = y₁ + (y₂−y₁)·(x−x₁)/(x₂−x₁)</div>
+      <div class="calc-row">
+        <div class="calc-input-group">
+          <label>x₁ · Valor inferior</label>
+          <div class="calc-input-wrap"><input id="x1L" class="calc-input" type="number" value="160"></div>
+        </div>
+        <div class="calc-input-group">
+          <label>y₁ · Propiedad en x₁</label>
+          <div class="calc-input-wrap"><input id="y1L" class="calc-input" type="number" value="2801.4"></div>
+        </div>
+      </div>
+      <div class="calc-row">
+        <div class="calc-input-group">
+          <label>x₂ · Valor superior</label>
+          <div class="calc-input-wrap"><input id="x2L" class="calc-input" type="number" value="200"></div>
+        </div>
+        <div class="calc-input-group">
+          <label>y₂ · Propiedad en x₂</label>
+          <div class="calc-input-wrap"><input id="y2L" class="calc-input" type="number" value="2870.7"></div>
+        </div>
+      </div>
+      <div class="calc-row">
+        <div class="calc-input-group">
+          <label>x · Valor a interpolar</label>
+          <div class="calc-input-wrap"><input id="xT" class="calc-input" type="number" value="180"></div>
+        </div>
+        <div class="calc-input-group"></div>
+      </div>
+      <div class="calc-result">
+        <div class="calc-result-label">Valor interpolado y</div>
+        <div class="calc-result-val" id="lerpOut">—</div>
+      </div>
+      <div class="calc-extra" id="lerpExtra"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════ PANEL: MAPA ═══════════════════ -->
+<section id="panel-mapa" class="panel">
+  <h2 class="panel-h">Mapa <em>conceptual</em></h2>
+  <p class="panel-sub">Relaciones entre los temas del grupo. Hacé clic en un nodo para filtrar esas consultas.</p>
+  <div class="diag-card">
+    <svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+      <!-- Conexiones -->
+      <line x1="350" y1="100" x2="150" y2="200" stroke="var(--b-2)" stroke-width="1.5"/>
+      <line x1="350" y1="100" x2="350" y2="200" stroke="var(--b-2)" stroke-width="1.5"/>
+      <line x1="350" y1="100" x2="550" y2="200" stroke="var(--b-2)" stroke-width="1.5"/>
+      <line x1="150" y1="200" x2="150" y2="310" stroke="var(--b-2)" stroke-width="1"/>
+      <line x1="350" y1="200" x2="350" y2="310" stroke="var(--b-2)" stroke-width="1"/>
+      <line x1="550" y1="200" x2="550" y2="310" stroke="var(--b-2)" stroke-width="1"/>
+      <line x1="350" y1="200" x2="150" y2="310" stroke="var(--b-2)" stroke-width="1" stroke-dasharray="3 3"/>
+      <line x1="350" y1="200" x2="550" y2="310" stroke="var(--b-2)" stroke-width="1" stroke-dasharray="3 3"/>
+
+      <!-- Nodo central: Tablas -->
+      <g class="map-node" data-jump-cat="tab">
+        <rect x="290" y="70" width="120" height="50" rx="10" fill="var(--t-tab)" stroke="var(--t-tab-fg)" stroke-width="1.5"/>
+        <text x="350" y="98" text-anchor="middle" fill="var(--t-tab-fg)" font-family="Fraunces,serif" font-size="15" font-weight="500">Tablas</text>
+        <text x="350" y="112" text-anchor="middle" fill="var(--t-tab-fg)" font-family="Inter,sans-serif" font-size="10">4 consultas</text>
+      </g>
+
+      <!-- 1° Principio -->
+      <g class="map-node" data-jump-cat="1pp">
+        <rect x="80" y="170" width="140" height="50" rx="10" fill="var(--t-1pp)" stroke="var(--t-1pp-fg)" stroke-width="1.5"/>
+        <text x="150" y="198" text-anchor="middle" fill="var(--t-1pp-fg)" font-family="Fraunces,serif" font-size="15">1° Principio</text>
+        <text x="150" y="212" text-anchor="middle" fill="var(--t-1pp-fg)" font-family="Inter,sans-serif" font-size="10">4 consultas</text>
+      </g>
+
+      <!-- Entropía -->
+      <g class="map-node" data-jump-cat="ent">
+        <rect x="275" y="170" width="150" height="50" rx="10" fill="var(--t-ent)" stroke="var(--t-ent-fg)" stroke-width="1.5"/>
+        <text x="350" y="198" text-anchor="middle" fill="var(--t-ent-fg)" font-family="Fraunces,serif" font-size="15">Entropía</text>
+        <text x="350" y="212" text-anchor="middle" fill="var(--t-ent-fg)" font-family="Inter,sans-serif" font-size="10">3 consultas</text>
+      </g>
+
+      <!-- 2° Principio -->
+      <g class="map-node" data-jump-cat="2pp">
+        <rect x="475" y="170" width="150" height="50" rx="10" fill="var(--t-2pp)" stroke="var(--t-2pp-fg)" stroke-width="1.5"/>
+        <text x="550" y="198" text-anchor="middle" fill="var(--t-2pp-fg)" font-family="Fraunces,serif" font-size="15">2° Principio</text>
+        <text x="550" y="212" text-anchor="middle" fill="var(--t-2pp-fg)" font-family="Inter,sans-serif" font-size="10">4 consultas</text>
+      </g>
+
+      <!-- Ciclos -->
+      <g class="map-node" data-jump-cat="cic">
+        <rect x="80" y="280" width="140" height="50" rx="10" fill="var(--t-cic)" stroke="var(--t-cic-fg)" stroke-width="1.5"/>
+        <text x="150" y="308" text-anchor="middle" fill="var(--t-cic-fg)" font-family="Fraunces,serif" font-size="15">Ciclos</text>
+        <text x="150" y="322" text-anchor="middle" fill="var(--t-cic-fg)" font-family="Inter,sans-serif" font-size="10">4 consultas</text>
+      </g>
+
+      <!-- Exergía -->
+      <g class="map-node" data-jump-cat="exg">
+        <rect x="275" y="280" width="150" height="50" rx="10" fill="var(--t-exg)" stroke="var(--t-exg-fg)" stroke-width="1.5"/>
+        <text x="350" y="308" text-anchor="middle" fill="var(--t-exg-fg)" font-family="Fraunces,serif" font-size="15">Exergía</text>
+        <text x="350" y="322" text-anchor="middle" fill="var(--t-exg-fg)" font-family="Inter,sans-serif" font-size="10">3 consultas</text>
+      </g>
+
+      <!-- General -->
+      <g class="map-node" data-jump-cat="gen">
+        <rect x="475" y="280" width="150" height="50" rx="10" fill="var(--t-gen)" stroke="var(--t-gen-fg)" stroke-width="1.5"/>
+        <text x="550" y="308" text-anchor="middle" fill="var(--t-gen-fg)" font-family="Fraunces,serif" font-size="15">General</text>
+        <text x="550" y="322" text-anchor="middle" fill="var(--t-gen-fg)" font-family="Inter,sans-serif" font-size="10">1 consulta</text>
+      </g>
+
+      <text x="350" y="395" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="var(--t-3)">Hacé clic en un nodo para filtrar las consultas de ese tema</text>
+    </svg>
+  </div>
+</section>
+
+<footer>
+  <span>Hecho con <span class="heart">♥</span> para el grupo de Transformación · UBA 2026</span>
+  <a href="#" onclick="switchTab('consultas');return false;">Ver todas las consultas</a>
+</footer>
+
+</div><!-- .app -->
+
+<!-- KaTeX -->
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+
+<script>
+const CONSULTAS = [
+  { n:1, cat:'tab', date:'19 mar 2026 · 10:36', sort:20260319103, q:"¿Cómo se interpola para el punto 4 de la guía? Los datos de vapor sobrecalentado a 180 °C no están en la tabla.", a:"Los datos de vapor sobrecalentado a 180 °C no figuran directamente en las tablas. Se interpola linealmente entre los valores disponibles (160 °C y 200 °C, o los que correspondan) para obtener las propiedades en ese estado intermedio.", by:'alu', byName:'Alumno del grupo' },
+  { n:2, cat:'tab', date:'19 mar 2026 · 10:43', sort:20260319104, q:"En el ejercicio 7, solo me dan presión y volumen específico. ¿Cómo sé en qué estado está el fluido?", a:"Hay que comparar el volumen específico dado con los valores de <strong>v<sub>f</sub></strong> (líquido saturado) y <strong>v<sub>g</sub></strong> (vapor saturado) a esa presión en la tabla. Si <strong>v<sub>f</sub> &lt; v &lt; v<sub>g</sub></strong>, el fluido es una mezcla líquido-vapor y se puede calcular el título <em>x</em> para determinar completamente el estado.", by:'alu', byName:'Alumno del grupo' },
+  { n:3, cat:'tab', date:'31 mar 2026 · 11:57', sort:20260331115, q:"¿Qué tablas de Cengel vamos a usar a lo largo de la materia? ¿Tengo que imprimir todo el PDF?", a:"Solo se van a utilizar las tablas de <strong>agua</strong> y <strong>refrigerante</strong>. No hace falta imprimir todo el PDF.", by:'doc', byName:'Tete (docente)' },
+  { n:4, cat:'1pp', date:'28 mar 2026 · 11:08', sort:20260328110, q:"En el primer principio para sistemas abiertos, la fórmula tiene un −(h<sub>e</sub>−h<sub>s</sub>). En el llenado de un tanque, como h<sub>e</sub> &gt; h<sub>s</sub>, el término queda negativo, y con Q=W=0 la variación de energía interna da negativa. ¿No debería aumentar?", a:"El error está en la interpretación del término: como es un <strong>delta</strong>, ΔH<sub>e–s</sub> = h<sub>s</sub> − h<sub>e</sub> (salida menos entrada), no al revés. Aplicando el 1° principio en régimen no estacionario con Q=W=0 queda <strong>ΔH<sub>e–s</sub> = −ΔU</strong>, lo que da variación de energía interna positiva — consistente con que el tanque se llena y su energía interna aumenta.", by:'doc', byName:'Tete (docente)' },
+  { n:5, cat:'1pp', date:'28 mar 2026 · 18:44', sort:20260328184, q:"En el ejercicio 3.5, ¿cómo se plantea el 1° principio en el inciso 1? El trabajo no me queda bien y no entiendo cómo sacar el calor en el inciso 2.", a:"El error frecuente es sacar el volumen específico <strong>afuera de la integral del trabajo</strong>, cuando en el proceso 1–2 el volumen varía (el pistón sube al expandirse el aire). El volumen no es constante y no puede sacarse de la integral. La resolución correcta aparece en los apuntes compartidos en el grupo.", by:'alu', byName:'Alumnos del grupo' },
+  { n:6, cat:'1pp', date:'4 abr 2026 · 16:10', sort:20260404161, q:"En el ejercicio del condensador con un río, puedo calcular el calor con el 1° principio, pero no entiendo cómo relacionarlo con la diferencia de temperatura del río.", a:"Es un <strong>intercambiador de calor</strong>: el calor que cede el vapor al condensarse es exactamente el que absorbe el agua del río. Como el agua es un líquido casi incompresible, se aplica: <strong>Q = ṁ<sub>río</sub> · c<sub>p,H₂O</sub> · ΔT</strong>. Es lo mismo que se vio al final de la clase de primer principio del viernes.", by:'doc', byName:'Tete (docente)' },
+  { n:7, cat:'1pp', date:'1 may 2026 · 13:09', sort:20260501130, q:"Para calcular el W<sub>pistón</sub>, ¿uso ΔV del cilindro completo (5 m³ – 0 m³) o solo 2 m³ como dice la respuesta del cuestionario?", a:"El ΔV del cilindro es <strong>5 m³ − 0 m³ = 5 m³</strong>. La respuesta del cuestionario con 2 m³ tenía un error; fue corregida por los docentes durante la misma conversación.", by:'doc', byName:'Juan F. Aquino (docente)' },
+  { n:8, cat:'ent', date:'17 abr 2026 · 17:14', sort:20260417171, q:"En un proceso adiabático reversible con <em>aire</em>, ¿qué tabla uso? Planteé s₁=s₂ pero tengo lío con las tablas. ¿Uso la A-17?", a:"El error fundamental fue tratar al <strong>aire como vapor sobrecalentado</strong>. El aire es un <strong>gas ideal</strong>: no se usan tablas, se aplican directamente las ecuaciones de gas ideal. Para un proceso isoentrópico (adiabático reversible), se usan las relaciones <strong>T₂/T₁ = (P₂/P₁)<sup>(k−1)/k</sup></strong> con k = Cp/Cv.", by:'doc', byName:'Tete (docente)' },
+  { n:9, cat:'ent', date:'18 abr 2026 · 18:01', sort:20260418180, q:"En el ejercicio con el recipiente dividido en dos masas de aire a distintas condiciones, ¿cómo calculo el ΔS del universo si el sistema está partido?", a:"La variación de entropía del sistema total es la <strong>suma de las variaciones de cada masa por separado</strong>: ΔS<sub>total</sub> = ΔS<sub>m1</sub> + ΔS<sub>m2</sub>. Cada masa usa su estado inicial propio (T₁,P₁ y T₂,P₂) y el mismo estado final (T<sub>f</sub>,P<sub>f</sub>), aplicando la primera ecuación de ΔS de gas ideal a cada una.", by:'doc', byName:'Juan F. Aquino (docente)' },
+  { n:10, cat:'ent', date:'18 abr 2026 · 18:39', sort:20260418183, q:"En el ejercicio con una resistencia eléctrica a temperatura constante, ¿la variación de entropía de la resistencia es cero? ¿Para qué sirve el dato de temperatura constante entonces?", a:"Correcto: en régimen estacionario la resistencia no cambia de estado, por lo que sus funciones de estado (U, H, S) no varían → <strong>ΔS<sub>resistencia</sub> = 0</strong>. Sin embargo, la conversión de trabajo eléctrico en calor es un proceso <strong>altamente irreversible</strong>. El dato de temperatura constante sirve para calcular la variación de entropía del <strong>medio que recibe el calor</strong>: ΔS<sub>medio</sub> = Q/T.", by:'doc', byName:'Juan F. Aquino (docente)' },
+  { n:11, cat:'tab', date:'25 abr 2026 · 18:55', sort:20260425185, q:"Me dan C<sub>p</sub> con unidades de kJ/kg·°C. ¿Tengo que convertirlo a Kelvin para los cálculos?", a:"No hace falta convertir. Los calores específicos (C<sub>p</sub> y C<sub>v</sub>) se definen a partir de <strong>diferencias de temperatura (ΔT)</strong>. Como un grado Celsius y un Kelvin representan exactamente el mismo intervalo, el valor numérico es idéntico en ambas escalas.", by:'doc', byName:'Tete (docente)' },
+  { n:12, cat:'2pp', date:'19 abr 2026 · 20:21', sort:20260419202, q:"¿Cómo se encara el ejercicio del ciclo de Carnot? No sé por dónde empezar.", a:"El ciclo de Carnot tiene <strong>4 evoluciones</strong>: 2 <strong>isotérmicas</strong> (con intercambio de calor reversible) y 2 <strong>isoentrópicas/adiabáticas</strong> (sin intercambio de calor). Para cada proceso hay que plantear las ecuaciones que correspondan. No es un ejercicio lineal: hay que ir proceso por proceso con lo que tiene sentido termodinámicamente.", by:'doc', byName:'Tete (docente)' },
+  { n:13, cat:'2pp', date:'20 abr 2026 · 15:00', sort:20260420150, q:"No puedo plantear el proceso 2→3 del ciclo de Carnot porque no conozco ninguna propiedad en el punto 3. Tengo más incógnitas que ecuaciones.", a:"La guía 5 es más <strong>conceptual</strong> que las anteriores. El camino corto es usar directamente la ecuación de rendimiento del ciclo de Carnot: <strong>η = 1 − T<sub>L</sub>/T<sub>H</sub></strong> (diapositiva 6 de 2° principio). Combinada con la ecuación de gases ideales con volumen específico, el sistema de ecuaciones cierra sin necesidad de conocer todas las propiedades en cada punto.", by:'doc', byName:'Docentes (Tete + Juan)' },
+  { n:14, cat:'2pp', date:'22 abr 2026 · 13:08', sort:20260422130, q:"En la fórmula de rendimiento del ciclo de Carnot η = 1 − T<sub>L</sub>/T<sub>H</sub>, ¿las temperaturas van en Celsius o en Kelvin?", a:"Siempre en <strong>Kelvin</strong>. Usar Celsius da resultados incorrectos porque la escala Celsius tiene un cero arbitrario. La única excepción donde se puede usar °C por comodidad es al anotar los datos iniciales en una tabla antes de operar. Para todos los cálculos: siempre Kelvin.", by:'doc', byName:'Juan F. Aquino (docente)' },
+  { n:15, cat:'2pp', date:'27 abr 2026 · 19:22', sort:20260427192, q:"En el ejercicio 6.7 del ciclo de Carnot, ¿la expansión isotérmica puede salir de la campana de saturación hacia vapor sobrecalentado?", a:"Sí. En un ciclo de Carnot los procesos son <strong>ideales</strong>. La expansión isotérmica puede salir de la campana de saturación hacia vapor sobrecalentado, algo que en la práctica real sería imposible, pero que el ciclo ideal de Carnot acepta. El ciclo de Carnot no existe como tal en la realidad.", by:'alu', byName:'Alumno (confirmado por docente)' },
+  { n:16, cat:'cic', date:'22 abr 2026 · 15:20', sort:20260422152, q:"¿La eficiencia isoentrópica de una bomba se calcula igual que la de un compresor (W<sub>rev</sub>/W<sub>irrev</sub>)? ¿Cómo calculo h₄ ideal?", a:"Sí: una <strong>bomba es un compresor para líquidos</strong>, la fórmula es la misma. Para h₄ ideal hay que definir un estado 4' con la <strong>misma presión de salida pero proceso isoentrópico</strong>, es decir: s<sub>4'</sub> = s<sub>3</sub>. Conociendo presión y entropía de 4', se sacan todas las demás propiedades de la tabla. El diagrama <strong>T-s</strong> es la herramienta visual clave para entender esto.", by:'doc', byName:'Juan F. Aquino (docente)' },
+  { n:17, cat:'cic', date:'22 abr 2026 · 17:04', sort:20260422170, q:"¿Qué C<sub>p</sub> uso para calcular ΔH en agua y en aire? ¿Es válido ΔH = C<sub>p</sub> · ΔT para vapor sobrecalentado?", a:"⚠️ <strong>Falla conceptual grave</strong>: ΔH = C<sub>p</sub>·ΔT y ΔU = C<sub>v</sub>·ΔT solo son válidas para <strong>gases ideales</strong>. El <strong>vapor de agua no es gas ideal</strong>: hay que usar tablas termodinámicas para calcular variaciones de entalpía. Si hay dudas sobre si el aire o el vapor son gases ideales, hay que revisar la carpeta porque indica un problema conceptual de base.", by:'doc', byName:'Tete (docente)' },
+  { n:18, cat:'cic', date:'2 may 2026 · 17:43', sort:20260502174, q:"¿Cómo se calcula el rendimiento isoentrópico de una turbina cuando el fluido es vapor de agua (no gas ideal)?", a:"Se aplica el <strong>1° principio en base a entalpías</strong>: η<sub>iso</sub> = ΔH<sub>real</sub> / ΔH<sub>ideal</sub> = (h<sub>ent</sub> − h<sub>sal,real</sub>) / (h<sub>ent</sub> − h<sub>sal,ideal</sub>). El estado de salida ideal se obtiene de la tabla termodinámica conociendo la presión de salida y la entropía de entrada (s<sub>sal,ideal</sub> = s<sub>ent</sub>).", by:'doc', byName:'Tete (docente)' },
+  { n:19, cat:'cic', date:'2 may 2026 · 18:09', sort:20260502180, q:"En un ejercicio con pistón, aunque no me lo diga explícitamente, ¿puedo asumir que la presión inicial y final son iguales (P<sub>i</sub> = P<sub>f</sub>)?", a:"Sí. En termodinámica <strong>siempre se trabaja de estado de equilibrio a estado de equilibrio</strong>. Si el pistón está en equilibrio mecánico en ambos estados, las presiones del gas y la externa se igualan. Esto se puede asumir aunque el enunciado no lo diga explícitamente.", by:'doc', byName:'Tete (docente)' },
+  { n:20, cat:'gen', date:'27 abr 2026 · 19:09', sort:20260427190, q:"¿Los ciclos de refrigeración entran para el parcial, incluyendo la parte teórica?", a:"Solo entra <strong>teoría de máquinas térmicas (MT) y máquinas frigoríficas (MF)</strong>. El parcial cubre eso en la parte teórica. No hay resolución de ejercicios numéricos de ciclos en el parcial.", by:'alu', byName:'Alumnos (confirmado por docentes)' },
+  { n:21, cat:'exg', date:'30 abr 2026 · 12:12', sort:20260430121, q:"Para calcular ΔX del universo en un compresor, ¿debo incluir la exergía del trabajo que entrega el motor al compresor?", a:"Sí. El <strong>universo termodinámico incluye todo lo que participa</strong> en el proceso. Si el motor no está incluido, el proceso no ocurre. Hay que considerar la variación de exergía de todos los elementos: fluido del compresor + quien entrega el trabajo.", by:'doc', byName:'Tete (docente)' },
+  { n:22, cat:'exg', date:'2 may 2026 · 10:55', sort:20260502105, q:'En el cálculo de ΔX del universo con una turbina, ¿qué "medio" recibe el trabajo mecánico? ¿Asumo que va al ambiente o a algo que lo aprovecha?', a:'<strong>Siempre hay algo que recibe el trabajo</strong>. El trabajo nunca se "libera al ambiente" como lo hace el calor. Ante la falta de datos, se asume que hay un receptor útil (ej. un generador eléctrico) que aumenta su exergía en ese monto. Lo que no se puede calcular es la variación de exergía del trabajo o calor propiamente dichos —son formas <em>dinámicas</em> de energía—; sí se puede calcular la de <strong>quienes los dan o reciben</strong>.', by:'doc', byName:'Juan F. Aquino (docente)' },
+  { n:23, cat:'exg', date:'2 may 2026 · 18:18', sort:20260502181, q:'¿Cómo calculo la "destrucción de exergía" de un equipo específico (turbina o compresor)? ¿Es lo mismo que −T₀·ΔS del sistema?', a:'La destrucción de exergía es el <strong>módulo de la variación de exergía del universo</strong> (|ΔX<sub>universo</sub>|). Para calcularla solo de un equipo específico, se hace un <strong>"zoom in"</strong>: el universo pasa a ser solo ese equipo, el sistema es el fluido que pasa por él, y el medio es quien recibe (turbina) o entrega (compresor) el trabajo. Siempre se cumple: <strong>ΔX<sub>universo</sub> = −T<sub>0</sub>·ΔS<sub>universo</sub></strong>.', by:'doc', byName:'Tete (docente)' }
+];
+
+const TAG_LABEL = { tab:'Tablas', '1pp':'1° Principio', '2pp':'2° Principio', ent:'Entropía', exg:'Exergía', cic:'Ciclos / Máquinas', gen:'General' };
+const TAG_CLASS = { tab:'tag-tab', '1pp':'tag-1pp', '2pp':'tag-2pp', ent:'tag-ent', exg:'tag-exg', cic:'tag-cic', gen:'tag-gen' };
+
+const LS = { bookmarks: 'transfo_bookmarks', reviewed: 'transfo_reviewed', theme: 'transfo_theme' };
+let activeFilter = 'all', searchTerm = '', sortAsc = true, bookmarkOnly = false;
+let bookmarks = readLS(LS.bookmarks, []);
+let reviewed  = readLS(LS.reviewed, []);
+
+function readLS(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch(e) { return fallback; } }
+function writeLS(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {} }
+
+function renderCards() {
+  const list = document.getElementById('cardList');
+  let cards = [...CONSULTAS];
+  cards.sort((a,b) => sortAsc ? b.sort - a.sort : a.sort - b.sort);
+  list.innerHTML = cards.map(c => {
+    const isBook = bookmarks.includes(c.n), isRev = reviewed.includes(c.n);
+    return `<article class="card ${isBook?'bookmarked':''} ${isRev?'reviewed':''}" data-cat="${c.cat}" data-id="${c.n}">
+      <div class="card-h">
+        <div class="card-num">${String(c.n).padStart(2,'0')}</div>
+        <div class="card-main">
+          <div class="card-meta"><span class="card-date">${c.date}</span><span class="tag ${TAG_CLASS[c.cat]}">${TAG_LABEL[c.cat]}</span></div>
+          <div class="card-q">${c.q}</div>
+        </div>
+        <div class="card-actions">
+          <button class="icon-btn ${isBook?'active':''}" title="Marcar como favorita" onclick="event.stopPropagation();toggleBookmark(${c.n})" aria-label="Favorita">
+            <svg viewBox="0 0 24 24" fill="${isBook?'currentColor':'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </button>
+          <button class="icon-btn ${isRev?'checked':''}" title="Marcar como revisada" onclick="event.stopPropagation();toggleReviewed(${c.n})" aria-label="Revisada">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </button>
+        </div>
+        <div class="card-chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+      </div>
+      <div class="card-body">
+        <div class="card-body-inner">
+          <div class="resp-label">Respuesta</div>
+          <p class="resp-text">${c.a}</p>
+          <div class="resp-by"><div class="resp-by-left"><div class="avatar avatar-${c.by}">${c.by==='doc'?'TT':'AL'}</div><span class="by-text">${c.byName}</span></div></div>
+        </div>
+      </div>
+    </article>`;
+  }).join('');
+  list.querySelectorAll('.card-h').forEach(h => {
+    h.addEventListener('click', e => { if (e.target.closest('.icon-btn')) return; toggleCard(h.closest('.card')); });
+  });
+}
+
+function toggleCard(card) {
+  const body = card.querySelector('.card-body');
+  if (card.classList.contains('open')) { body.style.maxHeight = '0'; card.classList.remove('open'); }
+  else { body.style.maxHeight = body.scrollHeight + 'px'; card.classList.add('open'); }
+}
+function expandAll() { document.querySelectorAll('#cardList .card:not(.hidden)').forEach(c => { const b = c.querySelector('.card-body'); b.style.maxHeight = b.scrollHeight + 'px'; c.classList.add('open'); }); }
+function collapseAll() { document.querySelectorAll('#cardList .card.open').forEach(c => { c.querySelector('.card-body').style.maxHeight = '0'; c.classList.remove('open'); }); }
+
+function toggleBookmark(n) { const i = bookmarks.indexOf(n); if (i >= 0) bookmarks.splice(i,1); else bookmarks.push(n); writeLS(LS.bookmarks, bookmarks); renderCards(); updateBookmarkUI(); applyFilters(); }
+function toggleReviewed(n) { const i = reviewed.indexOf(n); if (i >= 0) reviewed.splice(i,1); else reviewed.push(n); writeLS(LS.reviewed, reviewed); renderCards(); updateProgress(); applyFilters(); }
+function updateBookmarkUI() { document.getElementById('bookCount').textContent = bookmarks.length; }
+function updateProgress() { const c = reviewed.length; document.getElementById('reviewedCount').textContent = c; document.getElementById('progressFill').style.width = (100*c/23)+'%'; }
+
+function applyFilters() {
+  const cards = document.querySelectorAll('#cardList .card');
+  let visible = 0;
+  cards.forEach(card => {
+    const id = +card.dataset.id;
+    const catMatch = activeFilter==='all' || card.dataset.cat===activeFilter;
+    const bookMatch = !bookmarkOnly || bookmarks.includes(id);
+    const text = card.textContent.toLowerCase();
+    const searchMatch = !searchTerm || text.includes(searchTerm);
+    if (catMatch && bookMatch && searchMatch) {
+      card.classList.remove('hidden');
+      if (searchTerm) highlight(card, searchTerm); else clearHighlight(card);
+      visible++;
+    } else {
+      card.classList.add('hidden');
+      clearHighlight(card);
+      if (card.classList.contains('open')) { card.querySelector('.card-body').style.maxHeight='0'; card.classList.remove('open'); }
+    }
+  });
+  document.getElementById('empty').style.display = visible===0 ? 'block' : 'none';
+}
+
+function highlight(card, term) {
+  const els = card.querySelectorAll('.card-q, .resp-text');
+  const re = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'gi');
+  els.forEach(el => { if (!el._orig) el._orig = el.innerHTML; el.innerHTML = el._orig.replace(re,'<mark>$1</mark>'); });
+}
+function clearHighlight(card) { card.querySelectorAll('.card-q, .resp-text').forEach(el => { if (el._orig) { el.innerHTML = el._orig; delete el._orig; } }); }
+
+function toggleSort() { sortAsc = !sortAsc; document.getElementById('sortLabel').textContent = sortAsc ? 'Más reciente' : 'Más antigua'; renderCards(); applyFilters(); }
+
+function renderHeatmap() {
+  const weekStarts = [new Date(2026,2,16),new Date(2026,2,23),new Date(2026,2,30),new Date(2026,3,6),new Date(2026,3,13),new Date(2026,3,20),new Date(2026,3,27)];
+  const dayCount = {};
+  CONSULTAS.forEach(c => {
+    const m = c.date.match(/(\d+)\s+(\w+)\s+(\d+)/);
+    if (!m) return;
+    const months = {'ene':0,'feb':1,'mar':2,'abr':3,'may':4,'jun':5};
+    const d = new Date(+m[3], months[m[2].slice(0,3).toLowerCase()], +m[1]);
+    const key = d.toISOString().slice(0,10);
+    dayCount[key] = (dayCount[key]||0)+1;
+  });
+  const dayNames = ['Lu','Ma','Mi','Ju','Vi','Sá','Do'];
+  const monthHeader = weekStarts.map(d => `<div style="font-size:9px;color:var(--t-3);text-align:center">${d.getDate()} ${d.toLocaleDateString('es',{month:'short'}).replace('.','')} </div>`).join('');
+  let html = `<div style="display:grid;grid-template-columns:32px 1fr;gap:8px">
+    <div></div>
+    <div style="display:grid;grid-template-columns:repeat(${weekStarts.length},1fr);gap:3px;margin-bottom:6px">${monthHeader}</div>
+    <div style="display:grid;grid-template-rows:repeat(7,1fr);gap:3px;font-size:9px;color:var(--t-3);text-align:right;align-items:center">${dayNames.map(n=>`<div>${n}</div>`).join('')}</div>
+    <div style="display:grid;grid-template-columns:repeat(${weekStarts.length},1fr);grid-template-rows:repeat(7,1fr);gap:3px">`;
+  for (let day = 0; day < 7; day++) {
+    for (let week = 0; week < weekStarts.length; week++) {
+      const d = new Date(weekStarts[week]); d.setDate(d.getDate()+day);
+      const key = d.toISOString().slice(0,10);
+      const cnt = dayCount[key]||0, lvl = Math.min(5,cnt);
+      const dateStr = d.toLocaleDateString('es',{day:'numeric',month:'short'});
+      const tip = cnt ? `${cnt} consulta${cnt>1?'s':''} · ${dateStr}` : `Sin consultas · ${dateStr}`;
+      html += `<div class="heatmap-cell" data-count="${lvl}" title="${tip}" style="grid-row:${day+1};grid-column:${week+1}"></div>`;
+    }
+  }
+  html += '</div></div>';
+  document.getElementById('heatmap').innerHTML = html;
+}
+
+function renderDistribution() {
+  const counts = {};
+  CONSULTAS.forEach(c => counts[c.cat] = (counts[c.cat]||0)+1);
+  const max = Math.max(...Object.values(counts));
+  const order = ['cic','2pp','1pp','tab','ent','exg','gen'];
+  const list = document.getElementById('distList');
+  list.innerHTML = order.filter(k=>counts[k]).map(k => {
+    const c = counts[k], pct = (c/max)*100;
+    return `<div class="dist-row">
+      <div class="dist-dot dot-${k}"></div>
+      <div><div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:13px"><span style="color:var(--t-1)">${TAG_LABEL[k]}</span></div>
+      <div class="dist-bar-wrap"><div class="dist-bar bar-${k}" data-w="${pct}"></div></div></div>
+      <span>${c}</span>
+    </div>`;
+  }).join('');
+  setTimeout(()=>{ list.querySelectorAll('.dist-bar').forEach(b => b.style.width = b.dataset.w+'%'); }, 100);
+}
+
+function setupTabs() {
+  document.querySelectorAll('.tab').forEach(tab => { tab.addEventListener('click', () => switchTab(tab.dataset.panel)); });
+}
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.panel===name));
+  document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id==='panel-'+name));
+  if (name==='inicio') setTimeout(()=>{ document.querySelectorAll('.dist-bar').forEach(b => b.style.width = b.dataset.w+'%'); }, 50);
+  if (name==='consultas') updateProgress();
+}
+
+function loadTheme() {
+  const saved = localStorage.getItem(LS.theme) || 'dark';
+  document.body.setAttribute('data-theme', saved);
+  document.getElementById('iconMoon').style.display = saved==='dark' ? '' : 'none';
+  document.getElementById('iconSun').style.display  = saved==='dark' ? 'none' : '';
+}
+function toggleTheme() {
+  const cur = document.body.getAttribute('data-theme') || 'dark';
+  const next = cur==='dark' ? 'light' : 'dark';
+  document.body.setAttribute('data-theme', next);
+  localStorage.setItem(LS.theme, next);
+  document.getElementById('iconMoon').style.display = next==='dark' ? '' : 'none';
+  document.getElementById('iconSun').style.display  = next==='dark' ? 'none' : '';
+}
+
+function animateCounters() {
+  document.querySelectorAll('[data-counter]').forEach(el => {
+    const target = +el.dataset.counter, dur = 900, t0 = performance.now();
+    function step(t) { const p = Math.min(1,(t-t0)/dur), eased = 1-Math.pow(1-p,3); el.textContent = Math.round(target*eased); if(p<1) requestAnimationFrame(step); }
+    requestAnimationFrame(step);
+  });
+}
+
+function renderKatex() {
+  if (typeof katex === 'undefined') { setTimeout(renderKatex, 200); return; }
+  document.querySelectorAll('.katex-eq').forEach(el => { if (el._katexed) return; try { katex.render(el.textContent, el, {throwOnError:false, displayMode:true}); el._katexed=true; } catch(e){} });
+}
+
+function setupDiagrams() {
+  // P-v toggling
+  const pvBtns = document.querySelectorAll('#panel-diagramas .diag-card:nth-of-type(2) .diag-toggle');
+  const pvExpl = document.getElementById('pvExpl');
+  const pvExplains = {
+    'all':   'En todas las politrópicas el calor específico C permanece constante. El área bajo cada curva representa el trabajo de expansión <span class="formula-inline">W = ∫ P·dv</span>. Para la <strong>adiabática</strong>, además, vale <span class="formula-inline">P·v<sup>k</sup> = cte</span>.',
+    'iso-p': '<strong>Isóbara (P = cte):</strong> trabajo de expansión <span class="formula-inline">W = P·ΔV</span>. Para gas ideal: <span class="formula-inline">ΔU = Cv·ΔT</span>, <span class="formula-inline">Q = ΔH = Cp·ΔT</span>.',
+    'iso-v': '<strong>Isócora (v = cte):</strong> sin trabajo de expansión, <span class="formula-inline">W = 0</span>. Todo el calor entregado va a aumentar U: <span class="formula-inline">Q = ΔU = Cv·ΔT</span>.',
+    'iso-t': '<strong>Isoterma (T = cte):</strong> para gas ideal, <span class="formula-inline">ΔU = ΔH = 0</span>, así que <span class="formula-inline">Q = W = R·T·ln(v₂/v₁)</span>.',
+    'adiab': '<strong>Adiabática (Q = 0):</strong> <span class="formula-inline">P·v<sup>k</sup> = cte</span>, con k = Cp/Cv. Más empinada que la isoterma. <span class="formula-inline">W = −ΔU = −Cv·ΔT</span>.'
+  };
+  pvBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      pvBtns.forEach(b => b.classList.remove('active')); btn.classList.add('active');
+      const proc = btn.dataset.proc;
+      const svg = document.getElementById('svgPv');
+      svg.querySelectorAll('.svg-curve, [data-proc]').forEach(el => {
+        el.classList.remove('dim','highlight');
+        if (proc !== 'all' && el.getAttribute('data-proc') !== proc) el.classList.add('dim');
+        if (proc !== 'all' && el.getAttribute('data-proc') === proc) el.classList.add('highlight');
+      });
+      pvExpl.innerHTML = pvExplains[proc];
+    });
+  });
+
+  // Carnot toggling
+  const carBtns = document.querySelectorAll('#panel-diagramas .diag-card:nth-of-type(3) .diag-toggle');
+  const carExpl = document.getElementById('carnotExpl');
+  const carExplains = {
+    'all': 'El <strong>área del rectángulo</strong> en T-s es el trabajo neto del ciclo. La eficiencia es <span class="formula-inline">η = 1 − T<sub>L</sub>/T<sub>H</sub></span>: depende solo de las temperaturas absolutas de los focos.',
+    '12': '<strong>1→2 · Expansión isotérmica a T<sub>H</sub>:</strong> el sistema recibe Q<sub>H</sub> de la fuente caliente. Como T es constante en gas ideal, ΔU=0 y Q<sub>H</sub>=W. La entropía aumenta.',
+    '23': '<strong>2→3 · Expansión adiabática reversible (isoentrópica):</strong> sin intercambio de calor, el sistema sigue produciendo trabajo a expensas de su energía interna. La temperatura cae de T<sub>H</sub> a T<sub>L</sub>. ΔS=0.',
+    '34': '<strong>3→4 · Compresión isotérmica a T<sub>L</sub>:</strong> el sistema cede Q<sub>L</sub> a la fuente fría. Se necesita trabajo de compresión. La entropía disminuye exactamente lo mismo que aumentó en 1→2.',
+    '41': '<strong>4→1 · Compresión adiabática reversible:</strong> sin intercambio de calor, se comprime el sistema hasta llevar T de T<sub>L</sub> a T<sub>H</sub>. Cierra el ciclo. ΔS=0.'
+  };
+  carBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      carBtns.forEach(b => b.classList.remove('active')); btn.classList.add('active');
+      const step = btn.dataset.step;
+      const svg = document.getElementById('svgCarnot');
+      svg.querySelectorAll('.svg-curve, [data-step]').forEach(el => {
+        if (el.tagName==='text') { el.style.opacity = step==='all' ? 1 : (el.getAttribute('data-step')===step ? 1 : 0.18); }
+        else { el.classList.remove('dim','highlight'); if(step!=='all'&&el.getAttribute('data-step')!==step) el.classList.add('dim'); if(step!=='all'&&el.getAttribute('data-step')===step) el.classList.add('highlight'); }
+      });
+      const area = document.getElementById('netWorkArea'), lab = document.getElementById('netWorkLabel');
+      area.style.opacity = step==='all' ? 1 : 0.25; lab.style.opacity = step==='all' ? 1 : 0.4;
+      carExpl.innerHTML = carExplains[step];
+    });
+  });
+
+  // Saturation region
+  const satBtns = document.querySelectorAll('#panel-diagramas .diag-card:nth-of-type(1) .diag-toggle');
+  const satExpl = document.getElementById('satExpl');
+  const satPositions = {
+    'liq': { x:120, y:220, expl:'<strong>Líquido subenfriado</strong> (v &lt; v<sub>f</sub>): el fluido está completamente en fase líquida. Sus propiedades dependen poco de P y se aproximan por las de líquido saturado a la misma T.' },
+    'mix': { x:280, y:240, expl:'<strong>Mezcla líquido-vapor</strong> (v<sub>f</sub> &lt; v &lt; v<sub>g</sub>): coexisten ambas fases en equilibrio. Título <span class="formula-inline">x = (v − v<sub>f</sub>) / (v<sub>g</sub> − v<sub>f</sub>)</span>, cualquier propiedad: <span class="formula-inline">y = y<sub>f</sub> + x·(y<sub>g</sub> − y<sub>f</sub>)</span>.' },
+    'vap': { x:490, y:220, expl:'<strong>Vapor sobrecalentado</strong> (v &gt; v<sub>g</sub>): solo hay fase vapor a temperatura mayor a la de saturación. Las propiedades se obtienen de tablas de vapor sobrecalentado en función de P y T.' }
+  };
+  satBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      satBtns.forEach(b => b.classList.remove('active')); btn.classList.add('active');
+      const region = btn.dataset.region, pos = satPositions[region];
+      const pt = document.getElementById('satPoint');
+      pt.setAttribute('cx', pos.x); pt.setAttribute('cy', pos.y);
+      satExpl.innerHTML = pos.expl;
+    });
+  });
+}
+
+function setupCalculators() {
+  const tH = document.getElementById('tHC'), tL = document.getElementById('tLC');
+  function calcCarnot() {
+    const TH = +tH.value, TL = +tL.value;
+    const out = document.getElementById('carnotOut'), warn = document.getElementById('carnotWarn'), extra = document.getElementById('carnotExtra');
+    if (!isFinite(TH)||!isFinite(TL)||TH<=0||TL<=0) { out.innerHTML='—'; warn.classList.remove('show'); extra.textContent='Ingresá valores positivos en Kelvin'; return; }
+    if (TL>=TH) { out.innerHTML='—'; warn.classList.add('show'); warn.innerHTML='<strong>Atención:</strong> T<sub>L</sub> debe ser menor que T<sub>H</sub>.'; extra.textContent=''; return; }
+    const eta = 1-TL/TH;
+    out.innerHTML = `${eta.toFixed(3).replace('.',',')} <span class="calc-result-unit">= ${(eta*100).toFixed(1).replace('.',',')} %</span>`;
+    if (TH<100||TL<100) { warn.classList.add('show'); warn.innerHTML='<strong>Atención:</strong> alguno de los valores parece estar en °C. El rendimiento de Carnot exige siempre <strong>Kelvin</strong>.'; } else { warn.classList.remove('show'); }
+    extra.textContent = 'η_máx teórico · ningún ciclo real puede superarlo';
+  }
+  [tH,tL].forEach(el=>el.addEventListener('input',calcCarnot)); calcCarnot();
+
+  const t1I=document.getElementById('t1I'),p1I=document.getElementById('p1I'),p2I=document.getElementById('p2I'),kI=document.getElementById('kI');
+  function calcIso() {
+    const T1=+t1I.value,P1=+p1I.value,P2=+p2I.value,k=+kI.value;
+    const out=document.getElementById('isoOut'),extra=document.getElementById('isoExtra');
+    if (!isFinite(T1)||!isFinite(P1)||!isFinite(P2)||!isFinite(k)||T1<=0||P1<=0||P2<=0||k<=1) { out.innerHTML='—'; extra.textContent=''; return; }
+    const T2=T1*Math.pow(P2/P1,(k-1)/k);
+    out.innerHTML=`${T2.toFixed(1).replace('.',',')} <span class="calc-result-unit">K</span>`;
+    extra.innerHTML=`Relación de presiones: ${(P2/P1).toFixed(2)} · ΔT = ${(T2-T1).toFixed(1)} K`;
+  }
+  [t1I,p1I,p2I,kI].forEach(el=>el.addEventListener('input',calcIso)); calcIso();
+
+  const vS=document.getElementById('vS'),vfS=document.getElementById('vfS'),vgS=document.getElementById('vgS');
+  function calcState() {
+    const v=+vS.value,vf=+vfS.value,vg=+vgS.value;
+    const out=document.getElementById('stateOut'),lab=document.getElementById('stateLab'),extra=document.getElementById('stateExtra');
+    if (!isFinite(v)||!isFinite(vf)||!isFinite(vg)||vf>=vg) { out.innerHTML='—'; extra.textContent='Verificá v_f < v_g'; return; }
+    if (v<vf) { out.innerHTML='Líquido subenfriado'; lab.textContent='Estado · v < v_f'; extra.innerHTML=`v está <strong style="color:var(--info)">${((vf-v)/vf*100).toFixed(1)}%</strong> por debajo de v_f`; }
+    else if (v>vg) { out.innerHTML='Vapor sobrecalentado'; lab.textContent='Estado · v > v_g'; extra.innerHTML=`v está <strong style="color:var(--warn)">${((v-vg)/vg*100).toFixed(1)}%</strong> por encima de v_g`; }
+    else { const x=(v-vf)/(vg-vf); out.innerHTML='Mezcla líquido-vapor'; lab.textContent='Estado · v_f ≤ v ≤ v_g'; extra.innerHTML=`Título <strong style="color:var(--a-2)">x = ${x.toFixed(4)}</strong> · ${(x*100).toFixed(1)}% vapor en masa`; }
+  }
+  [vS,vfS,vgS].forEach(el=>el.addEventListener('input',calcState)); calcState();
+
+  const x1L=document.getElementById('x1L'),y1L=document.getElementById('y1L'),x2L=document.getElementById('x2L'),y2L=document.getElementById('y2L'),xT=document.getElementById('xT');
+  function calcLerp() {
+    const x1=+x1L.value,y1=+y1L.value,x2=+x2L.value,y2=+y2L.value,x=+xT.value;
+    const out=document.getElementById('lerpOut'),extra=document.getElementById('lerpExtra');
+    if (!isFinite(x1)||!isFinite(y1)||!isFinite(x2)||!isFinite(y2)||!isFinite(x)||x1===x2) { out.innerHTML='—'; extra.textContent=''; return; }
+    const y=y1+(y2-y1)*(x-x1)/(x2-x1);
+    out.innerHTML=y.toFixed(2);
+    const pos=((x-x1)/(x2-x1))*100;
+    extra.innerHTML=`Posición proporcional: ${pos.toFixed(1)}%${(pos<0||pos>100)?' · <span style="color:var(--warn)">⚠ extrapolación</span>':''}`;
+  }
+  [x1L,y1L,x2L,y2L,xT].forEach(el=>el.addEventListener('input',calcLerp)); calcLerp();
+}
+
+function setupJumps() {
+  document.querySelectorAll('[data-jump]').forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault(); const n = +el.dataset.jump;
+      switchTab('consultas');
+      setTimeout(() => {
+        activeFilter='all'; bookmarkOnly=false;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.cat==='all'));
+        searchTerm=''; document.getElementById('search').value='';
+        applyFilters();
+        const card = document.querySelector(`[data-id="${n}"]`);
+        if (card) { card.scrollIntoView({behavior:'smooth',block:'center'}); if(!card.classList.contains('open')) toggleCard(card); card.style.transition='box-shadow 0.4s'; card.style.boxShadow='0 0 0 2px var(--a)'; setTimeout(()=>card.style.boxShadow='',1800); }
+      }, 300);
+    });
+  });
+  document.querySelectorAll('.map-node').forEach(node => {
+    node.addEventListener('click', () => {
+      const cat = node.dataset.jumpCat; switchTab('consultas');
+      setTimeout(() => { activeFilter=cat; bookmarkOnly=false; document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.cat===cat)); searchTerm=''; document.getElementById('search').value=''; applyFilters(); }, 300);
+    });
+  });
+}
+
+function setupFilters() {
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.dataset.special==='bookmarked') { bookmarkOnly=!bookmarkOnly; btn.classList.toggle('active',bookmarkOnly); }
+      else { activeFilter=btn.dataset.cat; bookmarkOnly=false; document.querySelectorAll('.filter-btn').forEach(b => { if(!b.dataset.special) b.classList.toggle('active',b===btn); else b.classList.remove('active'); }); }
+      applyFilters();
+    });
+  });
+}
+
+function setupSearch() {
+  const search = document.getElementById('search');
+  search.addEventListener('input', () => { searchTerm=search.value.toLowerCase().trim(); applyFilters(); });
+}
+
+function setupKeyboard() {
+  document.addEventListener('keydown', e => {
+    if ((e.metaKey||e.ctrlKey)&&e.key==='k') { e.preventDefault(); switchTab('consultas'); setTimeout(()=>document.getElementById('search').focus(),100); }
+    if (e.key==='Escape') { const s=document.getElementById('search'); if(document.activeElement===s){s.value='';searchTerm='';applyFilters();s.blur();} }
+    if (!e.metaKey&&!e.ctrlKey&&!e.altKey&&document.activeElement.tagName!=='INPUT') { const tabs=['inicio','consultas','teoria','diagramas','calc','mapa']; const idx=+e.key-1; if(idx>=0&&idx<tabs.length) switchTab(tabs[idx]); }
+  });
+}
+
+function init() {
+  loadTheme(); renderCards(); renderHeatmap(); renderDistribution();
+  setupTabs(); setupFilters(); setupSearch(); setupCalculators();
+  setupDiagrams(); setupJumps(); setupKeyboard();
+  updateBookmarkUI(); updateProgress(); applyFilters(); animateCounters();
+  setTimeout(renderKatex, 100);
+  setTimeout(()=>{ document.querySelectorAll('.dist-bar').forEach(b => b.style.width = b.dataset.w+'%'); }, 200);
+}
+
+if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', init);
+else init();
+</script>
+</body>
+</html>
